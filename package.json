@@ -1,0 +1,24 @@
+{
+  "name": "recorder1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify ts/main.ts -p [ tsify --noImplicitAny ] -o bundle.js"
+  },
+  "keywords": [],
+  "author": "anatawa12 <anatawa12@icloud.com> (https://github.com/anatawa12/)",
+  "license": "MIT",
+  "dependencies": {
+    "@types/jquery": "^3.3.30",
+    "@types/node": "^12.6.3",
+    "discord.js": "^11.5.1",
+    "jquery": "^3.4.1",
+    "tsify": "^4.0.1",
+    "typescript": "^3.5.3"
+  },
+  "devDependencies": {
+    "browserify": "^16.3.0"
+  }
+}
