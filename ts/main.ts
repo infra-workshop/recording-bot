@@ -170,9 +170,14 @@ getFlag("emoji");
     console.log("add click secs");
 
     client.on('message', async (message: Message) => {
-        await addMessage(message.author, message);
-        if (message.content === 'ping') {
-            await message.reply('Pong!');
+        if (message.type == "DEFAULT") {
+            await addMessage(message.author, message);
+            if (message.content === 'ping') {
+                await message.reply('Pong!');
+            }
+        } else {
+            console.warn("unknown type message");
+            console.warn(message);
         }
     });
 
