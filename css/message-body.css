@@ -1,0 +1,31 @@
+.message-body em {
+    font-style: italic;
+}
+
+.message-body strong {
+    font-weight: 700;
+}
+
+.message-body strong {
+    font-weight: 700;
+}
+
+.message-body u {
+    text-decoration: underline;
+}
+
+.message-body pre {
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 5px;
+    background: #2f3136;
+    border-color: rgba(32,34,37,.3);
+}
+
+.message-body .hljs {
+    background: #2f3136;
+}
+
+.message-body code {
+    font-family: Consolas, Liberation Mono, Menlo, Courier, monospace;
+}
