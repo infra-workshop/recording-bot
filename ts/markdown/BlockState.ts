@@ -1,4 +1,4 @@
-import {Lines} from "./lines";
+import {Lines} from "./Lines";
 import {Token} from "./Token";
 import {BlockParser} from "./BlockParser";
 import {inlineToken} from "./block/BlockTokens";
