@@ -1,6 +1,6 @@
 import {GuildChannel, Message} from "discord.js";
 import getFlag from "./flags";
-import md from "./markdown/markdown";
+import md from "./markdown";
 
 function escapeHTMLRegex(regex: RegExp): RegExp {
     const source = regex.source;
@@ -29,7 +29,10 @@ class MessageFormatter {
     public format(msg: Message): string {
         let content = msg.content;
         // general markdown
-        content = md.render(content);
+        content = content.replace('&', "&amp;")
+            .replace('<', "&lt;")
+            .replace('>', "&gt;")
+            .replace('"', "&quot;");
 
         // global mentions
         if (getFlag("global mentions"))

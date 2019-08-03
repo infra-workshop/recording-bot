@@ -247,5 +247,6 @@ $RECYCLE.BIN/
 # custom
 
 # build
+dist/
 bundle*.js
 tokens.json

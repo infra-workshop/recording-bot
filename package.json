@@ -17,7 +17,6 @@
     "discord.js": "^11.5.1",
     "highlight.js": "^9.15.9",
     "jquery": "^3.4.1",
-    "markdown-it": "^9.0.1",
     "tsify": "^4.0.1",
     "typescript": "^3.5.3"
   },

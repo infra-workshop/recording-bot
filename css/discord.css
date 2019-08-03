@@ -120,6 +120,7 @@ a, abbr, acronym, address, applet, big, blockquote, #chat, caption, cite, code, 
 }
 
 .message-body {
+    white-space: pre-line;
     word-wrap: break-word;
 }
 
