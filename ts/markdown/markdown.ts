@@ -1,6 +1,7 @@
 import MarkdownIt from 'markdown-it';
 import * as hljs from 'highlight.js';
 import nop_paragraph from './nop_paragraph';
+import emphasis_with_underlines_postProcess from './emphasis_with_underlines_postProcess';
 
 var options = {
     linkify: true,
@@ -23,8 +24,10 @@ var md = MarkdownIt(options)
         'lheading',
         'table',
         'html_block',
+        'html_inline',
         'reference']);
 md.block.ruler.push('nop_paragraph', nop_paragraph);
+md.inline.ruler2.at('emphasis', emphasis_with_underlines_postProcess);
 md.linkify.set({fuzzyLink: false, fuzzyEmail: false});
 
 export = md;
@@ -44,4 +47,9 @@ fun TEST() {
 \`\`\`
 <
 hallo >&
+
+\\*: *a*
+\\_: _a_
+\\*\\*: **a**
+\\_\\_: __a__
 `));
