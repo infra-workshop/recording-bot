@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <meta charset="UTF-8">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<link rel="stylesheet" href="node_modules/highlight.js/styles/solarized-dark.css">
 <style>
     #screen_wrapper, #screen, #chat_wrapper, #chat {
         overflow: hidden;
@@ -241,6 +242,30 @@
 
         ::-webkit-scrollbar {
             width: 0;
+        }
+
+        .message-body em {
+            font-style: italic;
+        }
+
+        .message-body strong {
+            font-weight: 700;
+        }
+
+        .message-body pre {
+            border-width: 2px;
+            border-style: solid;
+            border-radius: 5px;
+            background: #2f3136;
+            border-color: rgba(32,34,37,.3);
+        }
+
+        .message-body .hljs {
+            background: #2f3136;
+        }
+
+        code {
+            font-family: Consolas, Liberation Mono, Menlo, Courier, monospace;
         }
     </style>
 

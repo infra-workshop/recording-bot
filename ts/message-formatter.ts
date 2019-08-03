@@ -1,5 +1,6 @@
 import {GuildChannel, Message} from "discord.js";
 import getFlag from "./flags";
+import md from "./markdown/markdown";
 
 function escapeHTMLRegex(regex: RegExp): RegExp {
     const source = regex.source;
@@ -27,11 +28,8 @@ const wrapWithSpan = (mkMsg: (arg0: string) => string|[string, number]) => (msg:
 class MessageFormatter {
     public format(msg: Message): string {
         let content = msg.content;
-        // general
-        content = content.replace('&', "&amp;")
-            .replace('<', "&lt;")
-            .replace('>', "&gt;")
-            .replace('"', "&quot;");
+        // general markdown
+        content = md.render(content);
 
         // global mentions
         if (getFlag("global mentions"))
