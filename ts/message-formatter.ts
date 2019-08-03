@@ -29,10 +29,7 @@ class MessageFormatter {
     public format(msg: Message): string {
         let content = msg.content;
         // general markdown
-        content = content.replace('&', "&amp;")
-            .replace('<', "&lt;")
-            .replace('>', "&gt;")
-            .replace('"', "&quot;");
+        content = md(content);
 
         // global mentions
         if (getFlag("global mentions"))
