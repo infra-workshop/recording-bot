@@ -1,0 +1,34 @@
+
+#screen_wrapper, #screen, #chat_wrapper, #chat {
+    overflow: hidden;
+}
+
+html {
+    width: 1280px;
+    height: 720px;
+    overflow: hidden;
+}
+
+body {
+    margin: 0;
+}
+
+#screen_wrapper {
+    float: left;
+    width: calc(1280px - 400px);
+    height: 720px;
+    margin: 0;
+}
+
+#chat_wrapper {
+    float: left;
+    width: 400px;
+    height: 720px;
+    margin: 0;
+}
+
+#screen, #chat {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
