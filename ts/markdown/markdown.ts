@@ -2,9 +2,11 @@ import MarkdownIt from 'markdown-it';
 import * as hljs from 'highlight.js';
 import nop_paragraph from './nop_paragraph';
 import emphasis_with_underlines_postProcess from './emphasis_with_underlines_postProcess';
+import costumed_blockquote from './costumed_blockquote';
 
 var options = {
     linkify: true,
+    breaks: true,
     highlight: function (str: string, lang: string) {
         if (lang && hljs.getLanguage(lang)) {
             try {
@@ -27,6 +29,7 @@ var md = MarkdownIt(options)
         'html_inline',
         'reference']);
 md.block.ruler.push('nop_paragraph', nop_paragraph);
+md.block.ruler.at('blockquote', costumed_blockquote);
 md.inline.ruler2.at('emphasis', emphasis_with_underlines_postProcess);
 md.linkify.set({fuzzyLink: false, fuzzyEmail: false});
 
@@ -54,4 +57,14 @@ hallo >&
 \\_\\_: __a__
 \\~: ~a~
 \\~\\~: ~~a~~
+
+> yes block
+> yes block l2
+>noblock
+
+========
+
+> as
+aa
+
 `));

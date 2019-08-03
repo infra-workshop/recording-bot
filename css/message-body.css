@@ -27,6 +27,7 @@
 }
 
 .message-body code {
+    white-space: pre-wrap;
     font-family: Consolas, Liberation Mono, Menlo, Courier, monospace;
 }
 
