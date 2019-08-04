@@ -3,10 +3,10 @@ import {InlineCodeToken} from "../Tokens";
 import {Writer} from "./Writer";
 import {escapeHtml} from "../util";
 
-const inlineCode: CustomWriter<InlineCodeToken> = function inlineCode(writer: Writer, token: InlineCodeToken) {
+const inline_code: CustomWriter<InlineCodeToken> = function inline_code(writer: Writer, token: InlineCodeToken) {
     const content = token.content;
 
     return `<code class="hljs">${escapeHtml(content)}</code>`;
 };
 
-export = inlineCode;
+export = inline_code;

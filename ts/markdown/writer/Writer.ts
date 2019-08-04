@@ -1,14 +1,16 @@
 import {Token} from "../Token";
 import {CustomWriter} from "./CustomWriter";
-import inline from "./inline";
 import {Env} from "../env";
+import writers = require("./writers");
 
 export class Writer {
     private tokens: Token[];
 
     constructor(tokens: Token[]) {
         this.tokens = tokens;
-        this.addWriter("inline", inline);
+        for (let [name, writer] of writers) {
+            this.addWriter(name, writer);
+        }
     }
 
     private str: string = "";
