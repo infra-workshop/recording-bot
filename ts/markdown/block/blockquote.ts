@@ -1,7 +1,7 @@
 import {BlockParser} from "../BlockParser";
 import {Token} from "../Token";
 import {BlockState} from "../BlockState";
-import {inlineToken} from "./BlockTokens";
+import {inlineToken} from "../Tokens";
 
 export const blockquote: BlockParser = function blockquote(state: BlockState) {
     if (!state.lines.get().startsWith("> "))

@@ -1,7 +1,7 @@
 import {Lines} from "./Lines";
 import {Token} from "./Token";
 import {BlockParser} from "./BlockParser";
-import {inlineToken} from "./block/BlockTokens";
+import {inlineToken} from "./Tokens";
 
 export class BlockState {
     public lines: Lines;

@@ -1,4 +1,4 @@
-import {Token} from "../Token";
+import {Token} from "./Token";
 
 export interface InlineToken extends Token {
     readonly name: "inline";

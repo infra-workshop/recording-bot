@@ -1,5 +1,5 @@
 import {CustomWriter} from "./CustomWriter";
-import {InlineToken} from "../block/BlockTokens";
+import {InlineToken} from "../Tokens";
 import {Writer} from "./Writer";
 
 const inline: CustomWriter<InlineToken> = function inline(writer: Writer, token: InlineToken) {

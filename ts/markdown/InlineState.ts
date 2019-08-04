@@ -1,5 +1,5 @@
 import {Token} from "./Token";
-import {inlineToken} from "./block/BlockTokens";
+import {inlineToken} from "./Tokens";
 import {Env} from "./env";
 import {InlineParser} from "./InlineParser";
 
@@ -45,7 +45,7 @@ export class InlineState {
 
     private parsers: InlineParser[] = [];
 
-    addParser(parser: InlineParser, env: Env = {}) {
+    addParser(parser: InlineParser) {
         this.parsers.push(parser);
     }
 

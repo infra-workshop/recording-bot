@@ -1,5 +1,5 @@
 import {InlineParser} from "../InlineParser";
-import {inlineToken} from "../block/BlockTokens";
+import {inlineToken} from "../Tokens";
 
 const escape: InlineParser = function escape(state): boolean {
     if (state.get() !== "\\") return false;
