@@ -29,6 +29,10 @@ export class InlineState {
         return index - this.pos;
     }
 
+    startsWith(searchString: string): boolean {
+        return this.get(searchString.length) == searchString
+    }
+
     goCursor(length: number) {
         this.pos += length
     }
