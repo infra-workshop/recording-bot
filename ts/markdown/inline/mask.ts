@@ -1,6 +1,6 @@
 import {InlineParser} from "../InlineParser";
 
-const strikethrough: InlineParser = function strikethrough(state, env): boolean {
+const mask: InlineParser = function mask(state, env): boolean {
     if (state.startsWith("||")) return false;
     const closeIndex = state.indexOf("||", 3);
     if (closeIndex == -1) return false;
@@ -27,4 +27,4 @@ const strikethrough: InlineParser = function strikethrough(state, env): boolean 
     return true;
 };
 
-export = strikethrough;
+export = mask;
