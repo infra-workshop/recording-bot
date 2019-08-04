@@ -1,6 +1,6 @@
 import {InlineParser} from "../InlineParser";
 import {InlineState} from "../InlineState";
-import {Token} from "../Token";
+import {codeToken} from "../Tokens";
 
 const codeBlock: InlineParser = function codeBlock(state: InlineState): boolean {
     if (state.startsWith("```")) return false;
@@ -29,24 +29,6 @@ const codeBlock: InlineParser = function codeBlock(state: InlineState): boolean 
 
     return true;
 };
-
-function codeToken(lang: string | null, content: string): CodeToken {
-    return {
-        name: "code",
-        tag: undefined,
-        indent: 0,
-        lang: lang,
-        content: content
-    }
-}
-
-interface CodeToken extends Token {
-    readonly name: "code";
-    readonly tag?: undefined;
-    readonly indent: 0;
-    readonly lang?: string | null;
-    readonly content: string;
-}
 
 export = codeBlock
 

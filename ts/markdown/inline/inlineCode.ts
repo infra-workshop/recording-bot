@@ -1,5 +1,5 @@
 import {InlineParser} from "../InlineParser";
-import {Token} from "../Token";
+import {inlineCodeToken} from "../Tokens";
 
 const inlineCode: InlineParser = function inlineCode(state): boolean {
     if (state.get() !== "`") return false;
@@ -39,25 +39,9 @@ const inlineCode: InlineParser = function inlineCode(state): boolean {
     state.goCursor(closeIndex);
     state.goCursor(realQuoteSize);
 
-    state.pushToken(codeToken(content));
+    state.pushToken(inlineCodeToken(content));
 
     return true;
 };
 
 export = inlineCode;
-
-function codeToken(content: string): InlineCodeToken {
-    return {
-        name: "inline_code",
-        tag: undefined,
-        indent: 0,
-        content: content
-    }
-}
-
-interface InlineCodeToken extends Token {
-    readonly name: "inline_code";
-    readonly tag?: undefined;
-    readonly indent: 0;
-    readonly content: string;
-}

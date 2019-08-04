@@ -43,5 +43,3 @@ export interface BlockquoteEnd extends Token {
     tag: "blockquote";
     indent: -1;
 }
-
-

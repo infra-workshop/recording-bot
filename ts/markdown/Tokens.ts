@@ -34,3 +34,37 @@ export function snowflakeToken(kind: SnowflakeKind, content: string, snowflake: 
         snowflake: snowflake
     }
 }
+
+export function codeToken(lang: string | null, content: string): CodeToken {
+    return {
+        name: "code",
+        tag: undefined,
+        indent: 0,
+        lang: lang,
+        content: content
+    }
+}
+
+export interface CodeToken extends Token {
+    readonly name: "code";
+    readonly tag?: undefined;
+    readonly indent: 0;
+    readonly lang?: string | null;
+    readonly content: string;
+}
+
+export function inlineCodeToken(content: string): InlineCodeToken {
+    return {
+        name: "inline_code",
+        tag: undefined,
+        indent: 0,
+        content: content
+    }
+}
+
+export interface InlineCodeToken extends Token {
+    readonly name: "inline_code";
+    readonly tag?: undefined;
+    readonly indent: 0;
+    readonly content: string;
+}
