@@ -1,6 +1,6 @@
 import {GuildChannel, Message} from "discord.js";
 import getFlag from "./flags";
-import md from "./markdown";
+import md from "../markdown";
 
 function escapeHTMLRegex(regex: RegExp): RegExp {
     const source = regex.source;
