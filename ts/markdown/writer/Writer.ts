@@ -6,7 +6,7 @@ export class Writer {
     private tokens: Token[];
 
     constructor(tokens: Token[]) {
-        this.tokens = tokens
+        this.tokens = tokens;
         this.addWriter("inline", inline);
     }
 
@@ -34,7 +34,7 @@ export class Writer {
         if (custom != null) {
             custom(this, token)
         } else {
-            if (token.tag == null) throw "Token without tag must have CustomWriter";
+            if (!token.tag) throw "Token without tag must have CustomWriter";
             this.writeTagToken(token);
         }
     }
