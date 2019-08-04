@@ -17,6 +17,7 @@ app.on('ready', async function () {
         webPreferences: {
             nodeIntegration: true
         },
+        resizable: false,
         frame: false
     });
 
