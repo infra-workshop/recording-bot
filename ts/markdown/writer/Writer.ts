@@ -1,6 +1,7 @@
 import {Token} from "../Token";
 import {CustomWriter} from "./CustomWriter";
 import inline from "./inline";
+import {Env} from "../env";
 
 export class Writer {
     private tokens: Token[];
@@ -22,17 +23,17 @@ export class Writer {
         this.customWriters.set(name, writer as CustomWriter<Token>)
     }
 
-    writeAll(): string {
+    writeAll(env: Env = {}): string {
         for (let token of this.tokens) {
-            this.writeToken(token)
+            this.writeToken(token, env)
         }
         return this.str;
     }
 
-    writeToken(token: Token) {
+    writeToken(token: Token, env: Env = {}) {
         const custom = this.customWriters.get(token.name);
         if (custom != null) {
-            custom(this, token)
+            custom(this, token, env)
         } else {
             if (!token.tag) throw "Token without tag must have CustomWriter";
             this.writeTagToken(token);
