@@ -1,7 +1,7 @@
 import {Token} from "../Token";
 import {CustomWriter} from "./CustomWriter";
 import {Env} from "../env";
-import writers = require("./writers");
+import {defaultWriters} from "./writers";
 
 export class Writer {
     private tokens: Token[];
@@ -11,7 +11,7 @@ export class Writer {
     }
 
     addDefaultWriters() {
-        for (let [name, writer] of writers) {
+        for (let [name, writer] of defaultWriters) {
             this.addWriter(name, writer);
         }
     }
