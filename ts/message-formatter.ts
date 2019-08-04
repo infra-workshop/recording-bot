@@ -1,5 +1,6 @@
 import {Message} from "discord.js";
-import {markdown} from "./markdown";
+import {markdown, MarkdownOptions} from "./markdown";
+import {discordInlineParsers, discordWriters} from "./markdown/discord";
 
 function escapeHTMLRegex(regex: RegExp): RegExp {
     const source = regex.source;
@@ -26,14 +27,14 @@ const wrapWithSpan = (mkMsg: (arg0: string) => string|[string, number]) => (msg:
 
 class MessageFormatter {
     public format(msg: Message): string {
-        let content = msg.content;
-        const options = {
+        const options: MarkdownOptions = {
+            inlineParsers: discordInlineParsers,
+            writers: discordWriters,
             env: {
                 message: msg
             }
         };
-        content = markdown(content, options);
-        return content;
+        return markdown(msg.content, options);
     }
 }
 
