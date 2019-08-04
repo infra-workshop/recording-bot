@@ -24,7 +24,7 @@ export const discordWriters: [string, CustomWriter<any>][] = [
     ["snowflake_emoji", snowflake_emoji],
 ];
 
-const discordInlineParsers: InlineParser[] = [
+export const discordInlineParsers: InlineParser[] = [
     mask,
     roleMentions,
     globalMentions,
