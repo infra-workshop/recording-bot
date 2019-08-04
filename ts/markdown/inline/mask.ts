@@ -1,7 +1,7 @@
 import {InlineParser} from "../InlineParser";
 
 const strikethrough: InlineParser = function strikethrough(state, env): boolean {
-    if (state.get(2) !== "||") return false;
+    if (state.startsWith("||")) return false;
     const closeIndex = state.indexOf("||", 3);
     if (closeIndex == -1) return false;
 

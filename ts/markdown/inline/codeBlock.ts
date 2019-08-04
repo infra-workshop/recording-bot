@@ -3,7 +3,7 @@ import {InlineState} from "../InlineState";
 import {Token} from "../Token";
 
 const codeBlock: InlineParser = function codeBlock(state: InlineState): boolean {
-    if (state.get(3) !== "```") return false;
+    if (state.startsWith("```")) return false;
     // ignore `````` allow ``` ```(no newlines) so 4
     const closeIndex = state.indexOf("```", 4);
     if (closeIndex == -1) return false;
