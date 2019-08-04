@@ -18,6 +18,8 @@ app.on('ready', async function () {
             nodeIntegration: true
         },
         resizable: false,
+        //only for release
+        //show: false,
         frame: false
     });
 
