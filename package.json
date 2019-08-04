@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify ts/main.ts -p [ tsify --noImplicitAny ] -o bundle.js"
+    "build": "browserify ts/main.ts -p [ tsify --noImplicitAny ] -o dist/bundle.js"
   },
   "keywords": [],
   "author": "anatawa12 <anatawa12@icloud.com> (https://github.com/anatawa12/)",
