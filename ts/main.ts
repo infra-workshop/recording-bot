@@ -1,6 +1,5 @@
 import {Client, Emoji, Message, MessageReaction, User} from 'discord.js';
 import 'jquery';
-import getFlag from "./flags";
 import messageFormatter from "./message-formatter";
 
 const chat = $('#chat')!;
@@ -155,13 +154,6 @@ const getAvatar = (user: User) => {
         return (`https://cdn.discordapp.com/embed/avatars/${Number(user.discriminator)%5}.png?size=40`);
     }
 }
-
-// init flags
-getFlag("global mentions");
-getFlag("user mentions");
-getFlag("channel mentions");
-getFlag("role mentions");
-getFlag("emoji");
 
 (async () => {
     await client.login(tokens.discord);
