@@ -1,6 +1,6 @@
 import {Token} from "../Token";
 import {CustomWriter} from "./CustomWriter";
-import inline from "./InlineWriter";
+import inline from "./inline";
 
 export class Writer {
     private tokens: Token[];
