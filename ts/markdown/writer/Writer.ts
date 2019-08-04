@@ -8,6 +8,9 @@ export class Writer {
 
     constructor(tokens: Token[]) {
         this.tokens = tokens;
+    }
+
+    addDefaultWriters() {
         for (let [name, writer] of writers) {
             this.addWriter(name, writer);
         }
