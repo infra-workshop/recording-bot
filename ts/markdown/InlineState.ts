@@ -2,6 +2,18 @@ import {Token} from "./Token";
 import {inlineToken} from "./Tokens";
 import {Env} from "./env";
 import {InlineParser} from "./InlineParser";
+import channelMentions = require("./inline/channelMentions");
+import codeBlock = require("./inline/codeBlock");
+import emoji = require("./inline/emoji");
+import escape = require("./inline/escape");
+import generalFormats = require("./inline/generalFormats");
+import globalMentions = require("./inline/globalMentions");
+import inlineCode = require("./inline/inlineCode");
+import mask = require("./inline/mask");
+import roleMentions = require("./inline/roleMentions");
+import strikethrough = require("./inline/strikethrough");
+import userMentions = require("./inline/userMentions");
+
 
 export class InlineState {
     private str: string;
@@ -9,6 +21,12 @@ export class InlineState {
 
     constructor(str: string) {
         this.str = str;
+    }
+
+    addDefaultParsers() {
+        for (let defaultInlineParser of defaultInlineParsers) {
+            this.addParser(defaultInlineParser);
+        }
     }
 
     match(regex: RegExp): RegExpMatchArray | null {
@@ -90,3 +108,17 @@ export class InlineState {
         this.goCursor(length);
     }
 }
+
+const defaultInlineParsers: InlineParser[] = [
+    escape,
+    codeBlock,
+    emoji,
+    generalFormats,
+    inlineCode,
+    strikethrough,
+    mask,
+    roleMentions,
+    globalMentions,
+    channelMentions,
+    userMentions,
+];
