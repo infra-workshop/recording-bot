@@ -1,5 +1,17 @@
 <!doctype html>
 
+<title>main-recorder</title>
 <link rel="stylesheet" href="../css/electron.css">
 
 <iframe src="./recoridng.html" id="recoridng" width="1280" height="720"></iframe>
+<div id="iframe-spacer"></div>
+<input type="button" id="stop" value="stop">
+<a id="download">ダウンロード</a>
+<br>
+<video id="screen-video" hidden></video>
+<canvas id="resize-canvas" width="1280" height="720"></canvas>
+
+<script>
+    exports = {}
+</script>
+<script src="./../dist/electron/browser.js"></script>

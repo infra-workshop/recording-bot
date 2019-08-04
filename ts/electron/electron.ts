@@ -13,7 +13,7 @@ app.on('ready', async function () {
     // ブラウザ(Chromium)の起動, 初期画面のロード
     mainWindow = new BrowserWindow({
         width: 1920,
-        height: 1080,
+        height: 1600,
         webPreferences: {
             nodeIntegration: true
         },
