@@ -63,7 +63,7 @@ fun test() {
 \`\`\`
 `;
 
-interface MarkdownOptions {
+export interface MarkdownOptions {
     inlineDefaultParsers?: boolean
     inlineParsers?: InlineParser[]
     blockDefaultParsers?: boolean
@@ -92,7 +92,7 @@ function replaceInline(blockTokens: Token[], options: MarkdownOptions) {
     return inlineTokens
 }
 
-function markdown(markdown: string, options: MarkdownOptions = {}): string {
+export function markdown(markdown: string, options: MarkdownOptions = {}): string {
     const state = new BlockState(markdown);
     if (options.blockDefaultParsers == undefined || options.blockDefaultParsers)
         state.addDefaultParsers();
@@ -109,7 +109,5 @@ function markdown(markdown: string, options: MarkdownOptions = {}): string {
             writer.addWriter(name, customWriter);
     return writer.writeAll(options.env);
 }
-
-export = markdown;
 
 //console.log(markdown(test));
