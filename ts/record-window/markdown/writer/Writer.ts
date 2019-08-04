@@ -6,7 +6,7 @@ export class Writer {
     private tokens: Token[];
 
     constructor(tokens: Token[]) {
-        this.tokens = tokens
+        this.tokens = tokens;
         this.addWriter("inline", inline);
     }
 

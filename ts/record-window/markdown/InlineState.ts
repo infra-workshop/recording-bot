@@ -45,7 +45,7 @@ export class InlineState {
 
     private parsers: InlineParser[] = [];
 
-    addParser(parser: InlineParser, env: Env = {}) {
+    addParser(parser: InlineParser) {
         this.parsers.push(parser);
     }
 

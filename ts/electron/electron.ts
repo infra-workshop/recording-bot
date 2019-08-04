@@ -24,5 +24,5 @@ app.on('ready', async function () {
         mainWindow = null;
     });
 
-    await mainWindow.loadURL('file://' + __dirname + '/../html/electron.html');
+    await mainWindow.loadURL('file://' + __dirname + '/../../html/electron.html');
 });

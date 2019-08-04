@@ -2,10 +2,10 @@
   "name": "main-recorder",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/electron.js",
+  "main": "dist/electron/electron.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify ts/main.ts -p [ tsify --noImplicitAny ] -o dist/bundle.js && tsc"
+    "build": "browserify ts/record-window/main.ts -p [ tsify --noImplicitAny ] -o dist/bundle.js && tsc"
   },
   "keywords": [],
   "author": "anatawa12 <anatawa12@icloud.com> (https://github.com/anatawa12/)",
