@@ -46,3 +46,15 @@
 .message-body .masked-text {
     opacity: 0;
 }
+
+code.inline {
+    background: #2f3136;
+    width: auto;
+    height: auto;
+    padding: .2em;
+    margin: -.2em 0;
+    border-radius: 3px;
+    font-size: 85%;
+    text-indent: 0;
+    border: none;
+}
