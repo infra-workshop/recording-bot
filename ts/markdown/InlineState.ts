@@ -8,6 +8,7 @@ import escape = require("./inline/escape");
 import generalFormats = require("./inline/generalFormats");
 import inlineCode = require("./inline/inlineCode");
 import strikethrough = require("./inline/strikethrough");
+import link = require("./inline/link");
 
 
 export class InlineState {
@@ -111,4 +112,5 @@ const defaultInlineParsers: InlineParser[] = [
     generalFormats,
     inlineCode,
     strikethrough,
+    link,
 ];

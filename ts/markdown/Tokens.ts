@@ -68,3 +68,19 @@ export interface InlineCodeToken extends Token {
     readonly indent: 0;
     readonly content: string;
 }
+
+export function linkToken(link: string): LinkToken {
+    return {
+        name: "link",
+        tag: undefined,
+        indent: 0,
+        link: link
+    }
+}
+
+export interface LinkToken extends Token {
+    readonly name: "link";
+    readonly tag?: undefined;
+    readonly indent: 0;
+    readonly link: string;
+}
