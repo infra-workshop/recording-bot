@@ -60,3 +60,11 @@ code.inline {
     text-indent: 0;
     border: none;
 }
+
+.message-body a {
+    color: #0096cf;
+    unicode-bidi: bidi-override;
+    direction: ltr;
+    word-break: break-word;
+    text-decoration: none;
+}
