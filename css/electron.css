@@ -1,0 +1,18 @@
+
+#recoridng {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    border: 0;
+    padding: 0;
+}
+
+#iframe-spacer {
+    margin-top: 800px;
+    border: 0;
+    padding: 0;
+}
+
+html {
+    overflow: hidden;
+}

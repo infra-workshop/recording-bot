@@ -2,10 +2,10 @@
   "name": "main-recorder",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/electron/electron.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify ts/main.ts -p [ tsify --noImplicitAny ] -o dist/bundle.js"
+    "build": "browserify ts/record-window/main.ts -p [ tsify --noImplicitAny ] -o dist/bundle.js && tsc"
   },
   "keywords": [],
   "author": "anatawa12 <anatawa12@icloud.com> (https://github.com/anatawa12/)",
@@ -15,6 +15,7 @@
     "@types/jquery": "^3.3.30",
     "@types/node": "^12.6.3",
     "discord.js": "^11.5.1",
+    "electron": "^6.0.0",
     "highlight.js": "^9.15.9",
     "jquery": "^3.4.1",
     "tsify": "^4.0.1",

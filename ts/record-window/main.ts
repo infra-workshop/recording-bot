@@ -5,7 +5,7 @@ import messageFormatter from "./message-formatter";
 
 const chat = $('#chat')!;
 const content = chat.children('.content').last();
-const tokens = require("../tokens.json");
+const tokens = require("../../tokens.json");
 
 function scroll_to_end() {
     chat.animate({scrollTop: chat[0].scrollHeight}, { duration: 800, easing: 'swing' });
@@ -154,7 +154,7 @@ const getAvatar = (user: User) => {
     } else {
         return (`https://cdn.discordapp.com/embed/avatars/${Number(user.discriminator)%5}.png?size=40`);
     }
-}
+};
 
 // init flags
 getFlag("global mentions");
