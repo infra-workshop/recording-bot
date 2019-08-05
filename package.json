@@ -4,8 +4,8 @@
   "description": "",
   "main": "dist/electron/electron.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify ts/record-window/main.ts -p [ tsify --noImplicitAny ] -o dist/bundle.js && tsc"
+    "test": "tsc && istanbul cover _mocha -- ./dist/js/tests/*.js",
+    "build": "browserify ts/record-window/main.ts -p [ tsify --noImplicitAny ] -o dist/bundle.js"
   },
   "keywords": [],
   "author": "anatawa12 <anatawa12@icloud.com> (https://github.com/anatawa12/)",
@@ -22,6 +22,11 @@
     "typescript": "^3.5.3"
   },
   "devDependencies": {
-    "browserify": "^16.3.0"
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.7",
+    "browserify": "^16.3.0",
+    "chai": "^4.2.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^6.2.0"
   }
 }

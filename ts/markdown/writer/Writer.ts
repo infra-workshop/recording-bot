@@ -1,13 +1,19 @@
 import {Token} from "../Token";
 import {CustomWriter} from "./CustomWriter";
-import inline from "./InlineWriter";
+import {Env} from "../env";
+import {defaultWriters} from "./writers";
 
 export class Writer {
     private tokens: Token[];
 
     constructor(tokens: Token[]) {
         this.tokens = tokens;
-        this.addWriter("inline", inline);
+    }
+
+    addDefaultWriters() {
+        for (let [name, writer] of defaultWriters) {
+            this.addWriter(name, writer);
+        }
     }
 
     private str: string = "";
@@ -22,19 +28,19 @@ export class Writer {
         this.customWriters.set(name, writer as CustomWriter<Token>)
     }
 
-    writeAll(): string {
+    writeAll(env: Env = {}): string {
         for (let token of this.tokens) {
-            this.writeToken(token)
+            this.writeToken(token, env)
         }
         return this.str;
     }
 
-    writeToken(token: Token) {
+    writeToken(token: Token, env: Env = {}) {
         const custom = this.customWriters.get(token.name);
         if (custom != null) {
-            custom(this, token)
+            custom(this, token, env)
         } else {
-            if (token.tag == null) throw "Token without tag must have CustomWriter";
+            if (!token.tag) throw "Token without tag must have CustomWriter";
             this.writeTagToken(token);
         }
     }

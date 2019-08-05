@@ -1,7 +1,15 @@
 import {Token} from "./Token";
-import {inlineToken} from "./block/BlockTokens";
+import {inlineToken} from "./Tokens";
 import {Env} from "./env";
 import {InlineParser} from "./InlineParser";
+import codeBlock = require("./inline/codeBlock");
+import emoji = require("./inline/emoji");
+import escape = require("./inline/escape");
+import generalFormats = require("./inline/generalFormats");
+import inlineCode = require("./inline/inlineCode");
+import strikethrough = require("./inline/strikethrough");
+import link = require("./inline/link");
+
 
 export class InlineState {
     private str: string;
@@ -9,6 +17,12 @@ export class InlineState {
 
     constructor(str: string) {
         this.str = str;
+    }
+
+    addDefaultParsers() {
+        for (let defaultInlineParser of defaultInlineParsers) {
+            this.addParser(defaultInlineParser);
+        }
     }
 
     match(regex: RegExp): RegExpMatchArray | null {
@@ -27,6 +41,10 @@ export class InlineState {
         const index = this.str.indexOf(searchString, this.pos + offset);
         if (index == -1) return index;
         return index - this.pos;
+    }
+
+    startsWith(searchString: string): boolean {
+        return this.get(searchString.length) == searchString
     }
 
     goCursor(length: number) {
@@ -86,3 +104,13 @@ export class InlineState {
         this.goCursor(length);
     }
 }
+
+const defaultInlineParsers: InlineParser[] = [
+    escape,
+    codeBlock,
+    emoji,
+    generalFormats,
+    inlineCode,
+    strikethrough,
+    link,
+];

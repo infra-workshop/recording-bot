@@ -1,13 +1,20 @@
 import {Lines} from "./Lines";
 import {Token} from "./Token";
 import {BlockParser} from "./BlockParser";
-import {inlineToken} from "./block/BlockTokens";
+import {inlineToken} from "./Tokens";
+import {blockquote} from "./block/blockquote";
 
 export class BlockState {
     public lines: Lines;
 
     constructor(string: string) {
         this.lines = new Lines(string)
+    }
+
+    addDefaultParsers() {
+        for (let defaultBlockParser of defaultBlockParsers) {
+            this.addParser(defaultBlockParser);
+        }
     }
 
     private tokens: Token[] = [];
@@ -51,3 +58,5 @@ export class BlockState {
         return this.tokens
     }
 }
+
+const defaultBlockParsers: BlockParser[] = [blockquote];

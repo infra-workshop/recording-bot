@@ -1,9 +1,9 @@
 import {InlineParser} from "../InlineParser";
 import {InlineState} from "../InlineState";
-import {Token} from "../Token";
+import {codeToken} from "../Tokens";
 
 const codeBlock: InlineParser = function codeBlock(state: InlineState): boolean {
-    if (state.get(3) !== "```") return false;
+    if (!state.startsWith("```")) return false;
     // ignore `````` allow ``` ```(no newlines) so 4
     const closeIndex = state.indexOf("```", 4);
     if (closeIndex == -1) return false;
@@ -20,6 +20,10 @@ const codeBlock: InlineParser = function codeBlock(state: InlineState): boolean 
         // 言語指定付き
         lang = bodyLines.shift()!;
         content = bodyLines.join("\n")
+    } else if (bodyLines[0].match(/^\s*$/)) {
+        // 複数行
+        bodyLines.shift();
+        content = bodyLines.join("\n")
     } else {
         // 複数行
         content = bodyLines.join("\n")
@@ -29,24 +33,6 @@ const codeBlock: InlineParser = function codeBlock(state: InlineState): boolean 
 
     return true;
 };
-
-function codeToken(lang: string | null, content: string): CodeToken {
-    return {
-        name: "code",
-        tag: undefined,
-        indent: 0,
-        lang: lang,
-        content: content
-    }
-}
-
-interface CodeToken extends Token {
-    readonly name: "code";
-    readonly tag?: undefined;
-    readonly indent: 0;
-    readonly lang?: string | null;
-    readonly content: string;
-}
 
 export = codeBlock
 
