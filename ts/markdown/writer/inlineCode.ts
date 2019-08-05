@@ -6,7 +6,7 @@ import {escapeHtml} from "../util";
 const inline_code: CustomWriter<InlineCodeToken> = function inline_code(writer: Writer, token: InlineCodeToken) {
     const content = token.content;
 
-    return `<code class="hljs">${escapeHtml(content)}</code>`;
+    writer.append(`<code class="hljs">${escapeHtml(content)}</code>`);
 };
 
 export = inline_code;

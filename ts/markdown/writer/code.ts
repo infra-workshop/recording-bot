@@ -10,12 +10,12 @@ const code: CustomWriter<CodeToken> = function code(writer: Writer, token: CodeT
 
     if (lang && getLanguage(lang)) {
         try {
-            return `<pre><code class="hljs">${highlight(lang, content, true).value}</code></pre>`;
+            writer.append(`<pre><code class="hljs">${highlight(lang, content, true).value}</code></pre>`);
+            return;
         } catch (__) {
         }
     }
-
-    return `<pre><code class="hljs">${escapeHtml(content)}</code></pre>`;
+    writer.append(`<pre><code class="hljs">${escapeHtml(content)}</code></pre>`);
 };
 
 export = code;
