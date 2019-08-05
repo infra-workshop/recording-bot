@@ -6,7 +6,7 @@ describe('markdownのテスト', () => {
 
     it('フルテスト', () => {
 
-        const resourcesPath = __dirname + "/../../../test-resources/";
+        const resourcesPath = __dirname + "/../../test-resources/";
 
         const md = fs.readFileSync(resourcesPath + "test.md").toString("utf8");
 
