@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/electron/electron.js",
   "scripts": {
-    "test": "tsc && istanbul cover _mocha -- ./dist/js/tests/*.js",
+    "test": "tsc && istanbul cover _mocha -- ./dist/tests/*.js",
     "build": "browserify ts/record-window/main.ts -p [ tsify --noImplicitAny ] -o dist/bundle.js"
   },
   "keywords": [],
