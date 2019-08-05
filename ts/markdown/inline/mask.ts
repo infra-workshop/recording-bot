@@ -1,7 +1,7 @@
 import {InlineParser} from "../InlineParser";
 
 const mask: InlineParser = function mask(state, env): boolean {
-    if (state.startsWith("||")) return false;
+    if (!state.startsWith("||")) return false;
     const closeIndex = state.indexOf("||", 3);
     if (closeIndex == -1) return false;
 
