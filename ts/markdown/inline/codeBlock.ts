@@ -20,6 +20,10 @@ const codeBlock: InlineParser = function codeBlock(state: InlineState): boolean 
         // 言語指定付き
         lang = bodyLines.shift()!;
         content = bodyLines.join("\n")
+    } else if (bodyLines[0].match(/^\s*$/)) {
+        // 複数行
+        bodyLines.shift();
+        content = bodyLines.join("\n")
     } else {
         // 複数行
         content = bodyLines.join("\n")
