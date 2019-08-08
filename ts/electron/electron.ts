@@ -1,6 +1,7 @@
-import {app, BrowserWindow} from 'electron';
+import {app, ipcMain, BrowserWindow} from 'electron';
+import * as fs from 'fs';
 
-let mainWindow = null;
+let mainWindow: BrowserWindow | null = null;
 
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') {
@@ -27,5 +28,13 @@ app.on('ready', async function () {
         mainWindow = null;
     });
 
+    mainWindow.webContents.openDevTools();
     await mainWindow.loadURL('file://' + __dirname + '/../../html/electron.html');
+
+    ipcMain.on("download", (event, uint8Ary: Uint8Array) => {
+        fs.existsSync(__dirname + '/../../video') || fs.mkdirSync( __dirname + '/../../video');
+        fs.writeFileSync(__dirname + '/../../video/' + new Date().toISOString() + ".webm", uint8Ary);
+        console.log("downloaded");
+    });
+
 });

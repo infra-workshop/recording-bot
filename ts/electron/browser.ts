@@ -1,4 +1,5 @@
-import {desktopCapturer} from 'electron';
+import {ipcRenderer, desktopCapturer} from 'electron';
+import {endianness} from "os";
 
 // region type def
 
@@ -75,6 +76,8 @@ declare global {
 
 //endregion
 
+let end: any;
+
 (async function () {
     try {
         const sources = await desktopCapturer.getSources({types: ['window']});
@@ -118,13 +121,26 @@ declare global {
                     mediaRecorder.start()
                 });
 
-                stop.addEventListener("click", () => {
+                // @ts-ignore
+                window.end = function() {
                     mediaRecorder.stop();
                     mediaRecorder.addEventListener("dataavailable", (e) => {
+                        console.log("stop");
                         const download = document.getElementById("download") as HTMLAnchorElement;
                         download.download = "video.webm";
                         download.href = window.URL.createObjectURL(e.data);
+                        const blobReader = new FileReader();
+                        blobReader.onload = () => {
+                            console.log("send download");
+                            ipcRenderer.send("download", new Uint8Array(blobReader.result as ArrayBuffer))
+                        };
+                        blobReader.readAsArrayBuffer(e.data as Blob);
                     });
+                };
+
+                stop.addEventListener("click", () => {
+                    // @ts-ignore
+                    end();
                 });
 
                 const play1 = video1.play();
