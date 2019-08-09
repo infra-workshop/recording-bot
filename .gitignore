@@ -249,4 +249,4 @@ $RECYCLE.BIN/
 # build
 dist/
 bundle*.js
-tokens.json
+resources/tokens.json
