@@ -9,6 +9,7 @@
       <sourceFolder url="file://$MODULE_DIR$/ts/audioManager" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ts/record-window" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ts/types" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ts/chrome" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jquery" level="application" />

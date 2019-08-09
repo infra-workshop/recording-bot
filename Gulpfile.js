@@ -6,6 +6,7 @@ const istanbul = require('gulp-istanbul');
 const mocha = require('gulp-mocha');
 
 const browser = "browser";
+const chrome = "chrome";
 const common = "common";
 const node = "node";
 
@@ -16,6 +17,7 @@ const config = {
             "record-window": browser,
             "tests": node,
             "types": common,
+            "chrome": chrome
         },
         srcDir: "./ts",
         dstDir: "./dist/js",
@@ -124,12 +126,44 @@ task("test", series(
     }
 ));
 
+task(chrome, series(
+    parallel(
+        common,
+        compileTs(chrome)
+    ),
+    parallel(
+        function doChromeContentScriptBrowserify() {
+            return browserify({
+                entries: `${config.ts.dstDir}/chrome/content_script.js`,
+                debug: true,
+            })
+                .bundle()
+                .pipe(source("content_script.js"))
+                .pipe(dest(`dist/${chrome}`));
+        },
+        function doChromeWebScriptBrowserify() {
+            return browserify({
+                entries: `${config.ts.dstDir}/chrome/web_script.js`,
+                debug: true,
+            })
+                .bundle()
+                .pipe(source("web_script.js"))
+                .pipe(dest(`dist/${chrome}`));
+        },
+        function copyChromeContents() {
+            return src([`${config.ts.srcDir}/${tsKindDirs(chrome)}/**/*`, `!${config.ts.srcDir}/${tsKindDirs(chrome)}/**/*.ts`])
+                .pipe(dest(`dist/${chrome}/`));
+        },
+    )
+));
+
 task("build",
     series(
         parallel(
             browser,
             common,
-            node
+            node,
+            chrome
         ),
 
         "test"
