@@ -4,7 +4,7 @@ import messageFormatter from "./message-formatter";
 
 const chat = $('#chat')!;
 const content = chat.children('.content').last();
-const tokens = require("../../tokens.json");
+const tokens = require("../../resources/tokens.json");
 
 function scroll_to_end() {
     chat.animate({scrollTop: chat[0].scrollHeight}, { duration: 800, easing: 'swing' });
