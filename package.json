@@ -12,8 +12,7 @@
     "electron": "^6.0.0",
     "highlight.js": "^9.15.9",
     "jquery": "^3.4.1",
-    "node-opus": "^0.3.2",
-    "tsify": "^4.0.1"
+    "node-opus": "^0.3.2"
   },
   "devDependencies": {
     "@types/chai": "^4.2.0",
