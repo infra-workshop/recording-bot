@@ -27,4 +27,4 @@ const mask: InlineParser = function mask(state, env): boolean {
     return true;
 };
 
-export = mask;
+export default mask;

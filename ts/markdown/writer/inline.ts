@@ -7,4 +7,4 @@ const inline: CustomWriter<InlineToken> = function inline(writer: Writer, token:
     writer.append(escapeHtml(token.content));
 };
 
-export = inline;
+export default inline;

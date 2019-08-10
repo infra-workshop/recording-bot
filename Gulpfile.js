@@ -65,6 +65,9 @@ const compileTs = kind => {
                 .pipe(sourcemaps.init())
                 .pipe(ts({
                     noImplicitAny: true,
+                    sourceMap: true,
+                    target: 'ES2015',
+                    module: "commonjs",
                 }))
                 .pipe(sourcemaps.write())
                 .pipe(dest(`${config.ts.dstDir}`));

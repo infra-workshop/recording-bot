@@ -6,4 +6,4 @@ const link: CustomWriter<LinkToken> = function link(writer, token) {
     writer.append(`<a href="${escapeHtml(token.link)}">${escapeHtml(token.link)}</a>`)
 };
 
-export = link;
+export default link;

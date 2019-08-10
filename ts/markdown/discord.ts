@@ -8,11 +8,11 @@ import {
     snowflake_user
 } from "./writer/snowflakes";
 import {InlineParser} from "./InlineParser";
-import channelMentions = require("./inline/channelMentions");
-import globalMentions = require("./inline/globalMentions");
-import mask = require("./inline/mask");
-import roleMentions = require("./inline/roleMentions");
-import userMentions = require("./inline/userMentions");
+import channelMentions from "./inline/channelMentions";
+import globalMentions from "./inline/globalMentions";
+import mask from "./inline/mask";
+import roleMentions from "./inline/roleMentions";
+import userMentions from "./inline/userMentions";
 
 export const discordWriters: [string, CustomWriter<any>][] = [
     ["mask_open", mask_open],

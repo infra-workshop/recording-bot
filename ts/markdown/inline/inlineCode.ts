@@ -44,4 +44,4 @@ const inlineCode: InlineParser = function inlineCode(state): boolean {
     return true;
 };
 
-export = inlineCode;
+export default inlineCode;

@@ -15,4 +15,4 @@ const globalMentions: InlineParser = function globalMentions(state, env): boolea
     return false
 };
 
-export = globalMentions;
+export default globalMentions;

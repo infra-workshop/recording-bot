@@ -13,4 +13,4 @@ const emoji: InlineParser = function emoji(state, env): boolean {
     return true;
 };
 
-export = emoji;
+export default emoji;

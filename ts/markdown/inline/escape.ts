@@ -13,4 +13,4 @@ const escape: InlineParser = function escape(state): boolean {
     return true;
 };
 
-export = escape;
+export default escape;
