@@ -5,7 +5,7 @@
   "manifest_version": 2,
   "content_scripts": [{
     "matches": ["<all_urls>"],
-    "js": ["jquery-2.2.0.min.js", "content_script.ts"]
+    "js": ["content_script.js"]
   }],
   "web_accessible_resources": [
     "web_script.js"

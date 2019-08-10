@@ -17,7 +17,8 @@ const config = {
             "record-window": browser,
             "tests": node,
             "types": common,
-            "chrome": chrome
+            "chrome": chrome,
+            "chrome-header": common
         },
         srcDir: "./ts",
         dstDir: "./dist/js",
@@ -151,7 +152,8 @@ task(chrome, series(
                 .pipe(dest(`dist/${chrome}`));
         },
         function copyChromeContents() {
-            return src([`${config.ts.srcDir}/${tsKindDirs(chrome)}/**/*`, `!${config.ts.srcDir}/${tsKindDirs(chrome)}/**/*.ts`])
+            return src([`${config.ts.srcDir}/${tsKindDirs(chrome)}/**/*`, `!${config.ts.srcDir}/${tsKindDirs(chrome)}/**/*.ts`],
+                { base: `${config.ts.srcDir}/${tsKindDirs(chrome)}` })
                 .pipe(dest(`dist/${chrome}/`));
         },
     )
