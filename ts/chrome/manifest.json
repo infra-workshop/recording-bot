@@ -13,5 +13,8 @@
   "permissions": [
     "<all_urls>",
     "tabCapture"
-  ]
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  }
 }

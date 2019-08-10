@@ -2,9 +2,11 @@
 
 import "../chrome-header/header";
 
-(async function () {
+async function main () {
     try {
-        window.RecorderTabCapSupport.enable();
+        await window.RecorderTabCapSupport.enable();
+        console.log(window.innerWidth);
+        console.log(window.innerHeight);
         const screenStream = await window.RecorderTabCapSupport.getCapture({
             audio: false,
             video: {
@@ -12,12 +14,10 @@ import "../chrome-header/header";
                     minWidth: window.innerWidth,
                     maxWidth: window.innerWidth,
                     minHeight: window.innerHeight,
-                    maxHeight: window.innerHeight
+                    maxHeight: window.innerHeight,
                 }
             } as any
         });
-        console.log(window.innerWidth);
-        console.log(window.innerHeight);
         const video1 = document.getElementById("screen-video") as HTMLVideoElement;
         const canvas = document.getElementById("resize-canvas") as HTMLCanvasElement;
         const stop = document.getElementById("stop") as HTMLInputElement;
@@ -47,4 +47,6 @@ import "../chrome-header/header";
     } catch (e) {
         console.error(e);
     }
-})();
+}
+(window.RecorderTabCapSupport || (window.RecorderTabCapSupport = {} as any)).onLoad = main;
+//else document.addEventListener("load", main);

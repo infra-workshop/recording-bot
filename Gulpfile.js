@@ -66,7 +66,7 @@ const compileTs = kind => {
                 .pipe(ts({
                     noImplicitAny: true,
                     sourceMap: true,
-                    target: 'ES2015',
+                    target: 'ES2017',
                     module: "commonjs",
                 }))
                 .pipe(sourcemaps.write())
@@ -164,6 +164,15 @@ task(chrome, series(
             })
                 .bundle()
                 .pipe(source("content_script.js"))
+                .pipe(dest(`dist/${chrome}`));
+        },
+        function doChromeBackgroundScriptBrowserify() {
+            return browserify({
+                entries: `${config.ts.dstDir}/chrome/background.js`,
+                debug: true,
+            })
+                .bundle()
+                .pipe(source("background.js"))
                 .pipe(dest(`dist/${chrome}`));
         },
         function doChromeWebScriptBrowserify() {
