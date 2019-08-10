@@ -4,6 +4,7 @@ const source = require("vinyl-source-stream");
 const browserify = require('browserify');
 const istanbul = require('gulp-istanbul');
 const mocha = require('gulp-mocha');
+const sourcemaps = require('gulp-sourcemaps');
 
 const browser = "browser";
 const recorder = "recorder";
@@ -61,9 +62,11 @@ const compileTs = kind => {
     const kindDirs = tsKindDirs(kind);
     return Object.defineProperty(function () {
             return src(`${config.ts.srcDir}/${kindDirs}/**/*.ts`)
+                .pipe(sourcemaps.init())
                 .pipe(ts({
                     noImplicitAny: true,
                 }))
+                .pipe(sourcemaps.write())
                 .pipe(dest(`${config.ts.dstDir}`));
         }
         , "name", {value: `compile${funName}Ts`});
@@ -111,7 +114,7 @@ task(recorder, series(
         common,
         compileTs(recorder)
     ),
-    function doBrowserify() {
+    function doRecorderBrowserify() {
         return browserify({
             entries: `${config.ts.dstDir}/recorder/main.js`,
             debug: true,

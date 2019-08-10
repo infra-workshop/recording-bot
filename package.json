@@ -26,6 +26,7 @@
     "gulp": "^4.0.2",
     "gulp-istanbul": "^1.1.3",
     "gulp-mocha": "latest",
+    "gulp-sourcemaps": "^2.6.5",
     "gulp-typescript": "^5.0.1",
     "istanbul": "^0.4.5",
     "mocha": "^6.2.0",

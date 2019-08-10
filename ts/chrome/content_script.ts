@@ -2,12 +2,12 @@ import {kind, request_capture, tagName} from "./shared";
 
 (()=>{
     const script = document.createElement("script");
-    script.src = "web_script.js";
-    document.appendChild(script);
+    script.src =  chrome.extension.getURL("web_script.js");
+    document.head.appendChild(script);
 })();
 
 (async () => {
-    await customElements.whenDefined(tagName);
+    await window.customElements.whenDefined(tagName);
     const wrapper = document.getElementsByTagName(tagName+"-wrapper")[0] as HTMLElement;
     const observer = new MutationObserver((records: MutationRecord[]) => {
         for (let record of records) {
