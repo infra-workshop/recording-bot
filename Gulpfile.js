@@ -6,6 +6,7 @@ const istanbul = require('gulp-istanbul');
 const mocha = require('gulp-mocha');
 
 const browser = "browser";
+const recorder = "recorder";
 const chrome = "chrome";
 const common = "common";
 const node = "node";
@@ -15,6 +16,7 @@ const config = {
         sourceDistDirectories: {
             "markdown": common,
             "record-window": browser,
+            "recorder": recorder,
             "tests": node,
             "types": common,
             "chrome": chrome,
@@ -101,6 +103,22 @@ task(browser, series(
             .bundle()
             .pipe(source("bundle.js"))
             .pipe(dest(`dist/${browser}`));
+    }
+));
+
+task(recorder, series(
+    parallel(
+        common,
+        compileTs(recorder)
+    ),
+    function doBrowserify() {
+        return browserify({
+            entries: `${config.ts.dstDir}/recorder/main.js`,
+            debug: true,
+        })
+            .bundle()
+            .pipe(source("bundle.js"))
+            .pipe(dest(`dist/${recorder}`));
     }
 ));
 
