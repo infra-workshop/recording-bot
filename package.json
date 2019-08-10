@@ -9,7 +9,6 @@
   "scripts": {},
   "dependencies": {
     "discord.js": "^11.5.1",
-    "electron": "^6.0.0",
     "highlight.js": "^9.15.9",
     "jquery": "^3.4.1",
     "node-opus": "^0.3.2"
