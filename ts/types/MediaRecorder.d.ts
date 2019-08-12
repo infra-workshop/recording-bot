@@ -66,3 +66,17 @@ declare class MediaRecorder extends EventTarget {
 interface HTMLCanvasElement {
     captureStream(frameRate?: number): MediaStream;
 }
+
+declare global {
+    interface MediaTrackConstraints extends MediaTrackConstraintSet {
+        advanced?: MediaTrackConstraintSet[];
+        mandatory?: any;
+    }
+
+    interface MediaStreamConstraints {
+        audio?: boolean | MediaTrackConstraints;
+        peerIdentity?: string;
+        video?: boolean | MediaTrackConstraints;
+    }
+}
+export = undefined;

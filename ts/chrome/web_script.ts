@@ -1,3 +1,5 @@
+///<reference path="../types/MediaRecorder.d.ts"/>
+
 import {enable, request_capture, tagName} from "./shared";
 
 window.RecorderTabCapSupport = (function (): RecorderTabCapSupport {
@@ -82,13 +84,12 @@ window.RecorderTabCapSupport = (function (): RecorderTabCapSupport {
         if (!wrapper) throw new Error("not enabled");
         if (promises[request_capture]) throw new Error("can't get two or more capture");
         const {streamId} = await sendToContent(request_capture);
-        options.video = options.video || {};
-        //@ts-ignore
-        options.video.mandatory = options.video.mandatory || {};
-        //@ts-ignore
-        options.video.mandatory.chromeMediaSource = 'tab';
-        //@ts-ignore
-        options.video.mandatory.chromeMediaSourceId = streamId;
+        options.video = (typeof options.video == "object") ? options.video : {};
+        const videoOpt = options.video as MediaTrackConstraints;
+
+        videoOpt.mandatory = videoOpt.mandatory || {};
+        videoOpt.mandatory.chromeMediaSource = 'tab';
+        videoOpt.mandatory.chromeMediaSourceId = streamId;
         return await navigator.mediaDevices.getUserMedia(options);
     };
 
