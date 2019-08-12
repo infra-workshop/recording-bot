@@ -1,9 +1,7 @@
 export const tagName = "recorder-tab-cap-support";
-export const kind = "kind";
 export const request_capture = "request_capture";
 export const enable = "enable";
 
-export const give_me_tab_id = "give_me_tab_id";
 export const getMediaStreamId = "getMediaStreamId";
 
 export function cerr() {

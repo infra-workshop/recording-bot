@@ -1,4 +1,4 @@
-import {cerr, enable, getMediaStreamId, give_me_tab_id, kind, request_capture, tagName} from "./shared";
+import {cerr, enable, getMediaStreamId, request_capture, tagName} from "./shared";
 
 const doEnable = () => {
     const wrapper = document.getElementsByTagName(tagName+"-wrapper")[0] as HTMLElement;
@@ -6,7 +6,7 @@ const doEnable = () => {
         for (let record of records) {
             if (record.type == 'childList') {
                 for (let i = 0; i < record.addedNodes.length; i++) {
-                    const nodeKind = (record.addedNodes[i] as Element).getAttribute(kind)!;
+                    const nodeKind = (record.addedNodes[i] as Element).getAttribute("kind")!;
                     onEvent(nodeKind);
                 }
             }
