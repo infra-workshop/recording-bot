@@ -34,12 +34,27 @@ function task(name, fn) {
 
     let invoked = false;
 
+    Object.defineProperty(fn, "name", { value: name + "Main"});
+
+    let dones = [];
+
+    const doneCaller = (done) => {
+        for (let done1 of dones) {
+            process.nextTick(done1);
+        }
+        dones = void 0;
+        done();
+    };
+
+    Object.defineProperty(doneCaller, "name", { value: name + "DoneCaller"});
+
     const once = (done) => {
         if (invoked) {
-            done();
+            if (dones) dones.push(done);
+            else done();
         } else {
             invoked = true;
-            return fn(done);
+            return series(fn, doneCaller)(done);
         }
     };
 
