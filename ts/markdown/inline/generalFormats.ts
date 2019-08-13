@@ -70,4 +70,4 @@ const generalFormats: InlineParser = function generalFormats(state: InlineState,
     return true
 };
 
-export = generalFormats
+export default generalFormats

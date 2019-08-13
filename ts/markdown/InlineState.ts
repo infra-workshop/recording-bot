@@ -2,13 +2,13 @@ import {Token} from "./Token";
 import {inlineToken} from "./Tokens";
 import {Env} from "./env";
 import {InlineParser} from "./InlineParser";
-import codeBlock = require("./inline/codeBlock");
-import emoji = require("./inline/emoji");
-import escape = require("./inline/escape");
-import generalFormats = require("./inline/generalFormats");
-import inlineCode = require("./inline/inlineCode");
-import strikethrough = require("./inline/strikethrough");
-import link = require("./inline/link");
+import codeBlock from "./inline/codeBlock";
+import emoji from "./inline/emoji";
+import escape from "./inline/escape";
+import generalFormats from "./inline/generalFormats";
+import inlineCode from "./inline/inlineCode";
+import strikethrough from "./inline/strikethrough";
+import link from "./inline/link";
 
 
 export class InlineState {

@@ -13,4 +13,4 @@ const channelMentions: InlineParser = function channelMentions(state, env): bool
     return true;
 };
 
-export = channelMentions;
+export default channelMentions;

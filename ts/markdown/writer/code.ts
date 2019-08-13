@@ -18,4 +18,4 @@ const code: CustomWriter<CodeToken> = function code(writer: Writer, token: CodeT
     writer.append(`<pre><code class="hljs">${escapeHtml(content)}</code></pre>`);
 };
 
-export = code;
+export default code;

@@ -13,4 +13,4 @@ const userMentions: InlineParser = function userMentions(state, env): boolean {
     return true;
 };
 
-export = userMentions;
+export default userMentions;

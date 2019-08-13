@@ -27,4 +27,4 @@ const strikethrough: InlineParser = function strikethrough(state, env): boolean 
     return true;
 };
 
-export = strikethrough;
+export default strikethrough;

@@ -13,4 +13,4 @@ const roleMentions: InlineParser = function roleMentions(state, env): boolean {
     return true;
 };
 
-export = roleMentions;
+export default roleMentions;

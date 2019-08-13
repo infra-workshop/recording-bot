@@ -13,4 +13,4 @@ const link: InlineParser = function link(state, env): boolean {
     return true;
 };
 
-export = link;
+export default link;

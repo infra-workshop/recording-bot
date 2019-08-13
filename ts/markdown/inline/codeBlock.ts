@@ -34,5 +34,5 @@ const codeBlock: InlineParser = function codeBlock(state: InlineState): boolean 
     return true;
 };
 
-export = codeBlock
+export default codeBlock
 

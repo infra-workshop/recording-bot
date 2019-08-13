@@ -4,8 +4,11 @@ const source = require("vinyl-source-stream");
 const browserify = require('browserify');
 const istanbul = require('gulp-istanbul');
 const mocha = require('gulp-mocha');
+const sourcemaps = require('gulp-sourcemaps');
 
 const browser = "browser";
+const recorder = "recorder";
+const chrome = "chrome";
 const common = "common";
 const node = "node";
 
@@ -14,8 +17,11 @@ const config = {
         sourceDistDirectories: {
             "markdown": common,
             "record-window": browser,
+            "recorder": recorder,
             "tests": node,
             "types": common,
+            "chrome": chrome,
+            "chrome-header": common
         },
         srcDir: "./ts",
         dstDir: "./dist/js",
@@ -71,9 +77,14 @@ const compileTs = kind => {
     const kindDirs = tsKindDirs(kind);
     return Object.defineProperty(function () {
             return src(`${config.ts.srcDir}/${kindDirs}/**/*.ts`)
+                .pipe(sourcemaps.init())
                 .pipe(ts({
                     noImplicitAny: true,
+                    sourceMap: true,
+                    target: 'ES2017',
+                    module: "commonjs",
                 }))
+                .pipe(sourcemaps.write())
                 .pipe(dest(`${config.ts.dstDir}`));
         }
         , "name", {value: `compile${funName}Ts`});
@@ -116,6 +127,22 @@ task(browser, series(
     }
 ));
 
+task(recorder, series(
+    parallel(
+        common,
+        compileTs(recorder)
+    ),
+    function doRecorderBrowserify() {
+        return browserify({
+            entries: `${config.ts.dstDir}/recorder/main.js`,
+            debug: true,
+        })
+            .bundle()
+            .pipe(source("bundle.js"))
+            .pipe(dest(`dist/${recorder}`));
+    }
+));
+
 task(node, series(
     parallel(
         common,
@@ -139,12 +166,54 @@ task("test", series(
     }
 ));
 
+task(chrome, series(
+    parallel(
+        common,
+        compileTs(chrome)
+    ),
+    parallel(
+        function doChromeContentScriptBrowserify() {
+            return browserify({
+                entries: `${config.ts.dstDir}/chrome/content_script.js`,
+                debug: true,
+            })
+                .bundle()
+                .pipe(source("content_script.js"))
+                .pipe(dest(`dist/${chrome}`));
+        },
+        function doChromeBackgroundScriptBrowserify() {
+            return browserify({
+                entries: `${config.ts.dstDir}/chrome/background.js`,
+                debug: true,
+            })
+                .bundle()
+                .pipe(source("background.js"))
+                .pipe(dest(`dist/${chrome}`));
+        },
+        function doChromeWebScriptBrowserify() {
+            return browserify({
+                entries: `${config.ts.dstDir}/chrome/web_script.js`,
+                debug: true,
+            })
+                .bundle()
+                .pipe(source("web_script.js"))
+                .pipe(dest(`dist/${chrome}`));
+        },
+        function copyChromeContents() {
+            return src([`${config.ts.srcDir}/${tsKindDirs(chrome)}/**/*`, `!${config.ts.srcDir}/${tsKindDirs(chrome)}/**/*.ts`],
+                { base: `${config.ts.srcDir}/${tsKindDirs(chrome)}` })
+                .pipe(dest(`dist/${chrome}/`));
+        },
+    )
+));
+
 task("build",
     series(
         parallel(
             browser,
             common,
-            node
+            node,
+            chrome
         ),
 
         "test"

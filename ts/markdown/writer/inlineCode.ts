@@ -9,4 +9,4 @@ const inline_code: CustomWriter<InlineCodeToken> = function inline_code(writer: 
     writer.append(`<code class="inline">${escapeHtml(content)}</code>`);
 };
 
-export = inline_code;
+export default inline_code;
