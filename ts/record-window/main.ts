@@ -14,10 +14,9 @@ function scroll_to_end() {
  * 16進数ひとけたの場合は01 02 03と表記する
  */
 function hex(s: string): string {
-    var result="";
-    for(var i=0;i<s.length;++i){
-        var h = ("0"+s.charCodeAt(i).toString(16)).substr(-2);
-        result += h;
+    let result = "";
+    for(let i=0; i<s.length; ++i){
+        result += ("0"+s.charCodeAt(i).toString(16)).substr(-2);
     }
     return result;
 }
