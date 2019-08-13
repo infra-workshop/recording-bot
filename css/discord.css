@@ -28,7 +28,7 @@ a, abbr, acronym, address, applet, big, blockquote, #chat, caption, cite, code, 
     align-items: center;
     z-index: 100;
     box-shadow: 0 1px 0 rgba(0, 0, 0, .2), 0 1.5px 0 rgba(0, 0, 0, .05), 0 2px 0 rgba(0, 0, 0, .05);
-    position: fixed;
+    position: absolute;
     top: 0;
     left: calc(1280px - 400px);
     background-color: #36393f;
