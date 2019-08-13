@@ -76,7 +76,7 @@ const compileTs = kind => {
     const funName = kind.charAt(0).toUpperCase() + kind.substr(1);
     const kindDirs = tsKindDirs(kind);
     return Object.defineProperty(function () {
-            return src(`${config.ts.srcDir}/${kindDirs}/**/*.ts`)
+            return src(`${config.ts.srcDir}/${kindDirs}/**/*.{ts,tsx}`)
                 .pipe(sourcemaps.init())
                 .pipe(ts({
                     noImplicitAny: true,
