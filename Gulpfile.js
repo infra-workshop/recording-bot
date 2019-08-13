@@ -76,9 +76,10 @@ const compileTs = kind => {
     const funName = kind.charAt(0).toUpperCase() + kind.substr(1);
     const kindDirs = tsKindDirs(kind);
     return Object.defineProperty(function () {
-            return src(`${config.ts.srcDir}/${kindDirs}/**/*.ts`)
+            return src(`${config.ts.srcDir}/${kindDirs}/**/*.{ts,tsx}`)
                 .pipe(sourcemaps.init())
                 .pipe(ts({
+                    "jsx": "react",
                     noImplicitAny: true,
                     sourceMap: true,
                     target: 'ES2017',
@@ -118,7 +119,7 @@ task(browser, series(
     ),
     function doBrowserify() {
         return browserify({
-            entries: `${config.ts.dstDir}/record-window/main.js`,
+            entries: `${config.ts.dstDir}/record-window/main-react.js`,
             debug: true,
         })
             .bundle()
@@ -211,6 +212,7 @@ task("build",
     series(
         parallel(
             browser,
+            recorder,
             common,
             node,
             chrome
