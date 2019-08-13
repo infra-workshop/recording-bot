@@ -9,11 +9,13 @@
   "scripts": {},
   "dependencies": {
     "@types/react": "^16.9.1",
+    "@types/react-dom": "^16.8.5",
     "discord.js": "^11.5.1",
     "highlight.js": "^9.15.9",
     "jquery": "^3.4.1",
     "node-opus": "^0.3.2",
-    "react": "^16.9.0"
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
   },
   "devDependencies": {
     "@types/chai": "^4.2.0",
