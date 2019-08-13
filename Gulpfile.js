@@ -119,7 +119,7 @@ task(browser, series(
     ),
     function doBrowserify() {
         return browserify({
-            entries: `${config.ts.dstDir}/record-window/main.js`,
+            entries: `${config.ts.dstDir}/record-window/main-react.js`,
             debug: true,
         })
             .bundle()
