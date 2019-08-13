@@ -105,6 +105,6 @@ export class Content extends React.Component<ContentProps, ContentState> {
 
     componentDidUpdate() {
         const node = ReactDOM.findDOMNode(this.endOfMsg) as Element;
-        node.scrollIntoView({behavior: "smooth"});
+        node.scrollIntoView({behavior: "smooth", block: "end"});
     }
 }
