@@ -12,9 +12,11 @@
   ],
   "permissions": [
     "<all_urls>",
-    "tabCapture"
+    "tabCapture",
+    "notifications"
   ],
   "background": {
     "scripts": ["background.js"]
-  }
+  },
+  "browser_action": {}
 }

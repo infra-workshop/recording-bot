@@ -1,6 +1,6 @@
 ///<reference path="../types/MediaRecorder.d.ts"/>
 
-import {enable, request_capture, tagName} from "./shared";
+import {enable, request_capture, request_capture_with_click, somePrefix} from "./shared";
 
 window.RecorderTabCapSupport = (function (): RecorderTabCapSupport {
     class RecorderTabCapSupportWrapper extends HTMLElement {
@@ -26,7 +26,7 @@ window.RecorderTabCapSupport = (function (): RecorderTabCapSupport {
     const promises: { [key: string]: PromiseInfo<any> } = {};
     const result: RecorderTabCapSupport = window.RecorderTabCapSupport || {} as any;
 
-    const sendToContent = (kind: string, msg: string|undefined = kind, timeout: number|undefined = 10000): Promise<any> => {
+    const sendToContent = (kind: string, {msg = kind, timeout = 1000}: {msg?: string|null, timeout?: number|null} = {}): Promise<any> => {
         if (msg) {
             const requestCapture = new RecorderTabCapSupportTag();
             requestCapture.setAttribute("kind", kind);
@@ -74,16 +74,27 @@ window.RecorderTabCapSupport = (function (): RecorderTabCapSupport {
         if (!window.isSecureContext) throw Error("RecorderTabCapSupport is supported only on the secure context");
         if (promises[enable]) throw new Error("now enabling");
 
-        customElements.define(tagName + "-wrapper", RecorderTabCapSupportWrapper);
+        customElements.define(somePrefix + "-wrapper", RecorderTabCapSupportWrapper);
         document.head.appendChild(wrapper = new RecorderTabCapSupportWrapper());
-        customElements.define(tagName, RecorderTabCapSupportTag);
-        await sendToContent(enable, undefined);
+        customElements.define(somePrefix, RecorderTabCapSupportTag);
+        await sendToContent(enable, {msg: null});
     };
 
     result.getCapture = async (options?: MediaStreamConstraints): Promise<MediaStream> => {
         if (!wrapper) throw new Error("not enabled");
         if (promises[request_capture]) throw new Error("can't get two or more capture");
-        const {streamId} = await sendToContent(request_capture);
+        let streamId;
+        try {
+            const {streamId: streamIdIn} = await sendToContent(request_capture);
+            streamId = streamIdIn;
+        } catch (e) {
+            if (e.message == "Extension has not been invoked for the current page (see activeTab permission). Chrome pages cannot be captured.") {
+                const {streamId: streamIdIn} = await sendToContent(request_capture_with_click, {timeout:null});
+                streamId = streamIdIn;
+            } else {
+                throw e;
+            }
+        }
         options.video = (typeof options.video == "object") ? options.video : {};
         const videoOpt = options.video as MediaTrackConstraints;
 
