@@ -6,11 +6,6 @@ import {Content} from "./content";
 import {RefObject} from "react";
 
 const tokens = require("../../resources/tokens.json");
-/*
-function scroll_to_end() {
-    chat.animate({scrollTop: chat[0].scrollHeight}, { duration: 800, easing: 'swing' });
-}
- */
 
 /**
  * 文字列を16進数に変換する
