@@ -211,6 +211,7 @@ task("build",
     series(
         parallel(
             browser,
+            recorder,
             common,
             node,
             chrome
