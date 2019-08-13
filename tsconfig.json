@@ -1,6 +1,9 @@
 {
-  "noImplicitAny": true,
-  "sourceMap": true,
-  "target": "ES2015",
-  "module": "commonjs"
+  "compilerOptions": {
+    "jsx": "react",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "target": "ES2015",
+    "module": "commonjs"
+  }
 }

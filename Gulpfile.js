@@ -79,6 +79,7 @@ const compileTs = kind => {
             return src(`${config.ts.srcDir}/${kindDirs}/**/*.{ts,tsx}`)
                 .pipe(sourcemaps.init())
                 .pipe(ts({
+                    "jsx": "react",
                     noImplicitAny: true,
                     sourceMap: true,
                     target: 'ES2017',
