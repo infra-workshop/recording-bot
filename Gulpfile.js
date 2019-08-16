@@ -16,6 +16,7 @@ const config = {
     ts: {
         sourceDistDirectories: {
             "markdown": common,
+            "common-objects": common,
             "record-window": browser,
             "recorder": recorder,
             "tests": node,

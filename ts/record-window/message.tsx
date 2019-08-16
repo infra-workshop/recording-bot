@@ -1,7 +1,7 @@
 ///<reference path="../types/react-html-parser.d.ts"/>
 
 
-import {Emoji, isEmoji, Message, MessageReaction, User} from "./constant-discord-elements";
+import {Emoji, isEmoji, Message, MessageReaction, User} from "../common-objects/constant-discord-elements";
 import * as React from "react";
 import messageFormatter from "./message-formatter";
 

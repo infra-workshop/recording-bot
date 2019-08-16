@@ -1,7 +1,7 @@
 import {Message as DiscordMessage} from "discord.js";
 import {markdown, MarkdownOptions} from "../markdown";
 import {discordInlineParsers, discordWriters} from "../markdown/discord";
-import {Message} from "./constant-discord-elements";
+import {Message} from "../common-objects/constant-discord-elements";
 
 class MessageFormatter {
     public format(msg: Message | DiscordMessage): string {

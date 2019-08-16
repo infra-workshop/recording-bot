@@ -5,7 +5,7 @@ import {
     Snowflake,
     User as DiscordUser
 } from "discord.js";
-import {Message, MessageReaction, newMessage, newMessageReaction} from "./constant-discord-elements";
+import {Message, MessageReaction, newMessage, newMessageReaction} from "../common-objects/constant-discord-elements";
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 import {Content} from "./content";

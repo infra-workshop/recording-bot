@@ -1,11 +1,11 @@
-import {Snowflake} from "discord.js";
+import {Snowflake} from "ts/markdown/discord.js";
 import {
     Message as DiscordMessage,
     User as DiscordUser,
     MessageReaction as DiscordMessageReaction,
     Emoji as DiscordEmoji,
     ReactionEmoji as DiscordReactionEmoji
-} from "discord.js";
+} from "ts/markdown/discord.js";
 
 type Optionals<T> = {
     [P in keyof T]?: T[P]

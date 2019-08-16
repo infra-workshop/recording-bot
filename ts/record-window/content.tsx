@@ -1,5 +1,5 @@
 import {Message as DiscordMessage, MessageReaction as DiscordMessageReaction, Snowflake} from "discord.js";
-import {copyMessage, Message, MessageReaction, User} from "./constant-discord-elements";
+import {copyMessage, Message, MessageReaction, User} from "../common-objects/constant-discord-elements";
 import * as React from "react";
 import {MessageData} from "./message";
 import * as ReactDOM from "react-dom";
