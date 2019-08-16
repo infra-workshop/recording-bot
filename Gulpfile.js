@@ -19,6 +19,7 @@ const config = {
             "common-objects": common,
             "record-window": browser,
             "recorder": recorder,
+            "discord-controller": node,
             "tests": node,
             "types": common,
             "chrome": chrome,
