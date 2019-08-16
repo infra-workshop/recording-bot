@@ -1,3 +1,6 @@
+///<reference path="../types/window.d.ts"/>
+
+
 import {
     Client,
     Message as DiscordMessage,
@@ -49,6 +52,11 @@ export function editMessage(newMessage: Message) {
 export function updateReaction(messageId: Snowflake, newReaction: MessageReaction) {
     content.current.updateReaction(messageId, newReaction)
 }
+
+window.addMessage = addMessage;
+window.removeMessage = removeMessage;
+window.editMessage = editMessage;
+window.updateReaction = updateReaction;
 
 const client = new Client();
 
