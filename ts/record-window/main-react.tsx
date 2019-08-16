@@ -1,5 +1,11 @@
-import {Client, Emoji, Message, MessageReaction, User} from 'discord.js';
-import messageFormatter from "./message-formatter";
+import {
+    Client,
+    Message as DiscordMessage,
+    MessageReaction as DiscordMessageReaction,
+    Snowflake,
+    User as DiscordUser
+} from "discord.js";
+import {Message, MessageReaction, newMessage, newMessageReaction} from "./constant-discord-elements";
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 import {Content} from "./content";
@@ -20,7 +26,7 @@ function hex(s: string): string {
 }
 
 
-const content: RefObject<Content> = React.createRef()
+const content: RefObject<Content> = React.createRef();
 
 ReactDOM.render(
     <Content ref={content}/>,
@@ -28,20 +34,20 @@ ReactDOM.render(
 );
 
 
-function addMessage(messageInfo: Message) {
+export function addMessage(messageInfo: Message) {
     content.current.addMessage(messageInfo)
 }
 
-function removeMessage(messageInfo: Message) {
+export function removeMessage(messageInfo: Message) {
     content.current.removeMessage(messageInfo)
 }
 
-function editMessage(newMessage: Message) {
+export function editMessage(newMessage: Message) {
     content.current.editMessage(newMessage)
 }
 
-function updateReaction(reactionInfo: MessageReaction) {
-    content.current.updateReaction(reactionInfo)
+export function updateReaction(messageId: Snowflake, newReaction: MessageReaction) {
+    content.current.updateReaction(messageId, newReaction)
 }
 
 const client = new Client();
@@ -56,9 +62,9 @@ client.on('ready', () => {
 
     console.log("add click secs");
 
-    client.on('message', async (message: Message) => {
+    client.on('message', async (message: DiscordMessage) => {
         if (message.type == "DEFAULT") {
-            await addMessage(message);
+            await addMessage(newMessage(message));
             if (message.content === 'ping') {
                 await message.reply('Pong!');
             }
@@ -68,20 +74,20 @@ client.on('ready', () => {
         }
     });
 
-    client.on('messageDelete', async (message: Message) => { removeMessage(message) });
+    client.on('messageDelete', async (message: DiscordMessage) => { removeMessage(newMessage(message)) });
 
-    client.on("messageUpdate", async (oldMessage: Message, newMessage: Message) => {
+    client.on("messageUpdate", async (oldMessage: DiscordMessage, new_Message: DiscordMessage) => {
         console.log(`oldMessage.id: ${oldMessage.id}`);
-        console.log(`newMessage.id: ${newMessage.id}`);
-        editMessage(newMessage);
+        console.log(`newMessage.id: ${new_Message.id}`);
+        editMessage(newMessage(new_Message));
     });
 
-    client.on("messageReactionAdd", async (messageReaction: MessageReaction, user: User) => {
-        updateReaction(messageReaction)
+    client.on("messageReactionAdd", async (messageReaction: DiscordMessageReaction, user: DiscordUser) => {
+        updateReaction(messageReaction.message.id, newMessageReaction(messageReaction))
     });
 
-    client.on("messageReactionRemove", async (messageReaction: MessageReaction, user: User) => {
-        updateReaction(messageReaction)
+    client.on("messageReactionRemove", async (messageReaction: DiscordMessageReaction, user: DiscordUser) => {
+        updateReaction(messageReaction.message.id, newMessageReaction(messageReaction))
     });
 
     await new Promise((resolve) => { setTimeout(resolve, 10000); });

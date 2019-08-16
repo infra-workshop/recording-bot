@@ -1,7 +1,7 @@
 ///<reference path="../types/react-html-parser.d.ts"/>
 
 
-import {Emoji, Message, MessageReaction, User} from "./constant-discord-elements";
+import {Emoji, isEmoji, Message, MessageReaction, User} from "./constant-discord-elements";
 import * as React from "react";
 import messageFormatter from "./message-formatter";
 
@@ -66,7 +66,7 @@ function Reaction({reaction}: ReactionProps) {
     return (
         <div className="reaction">
             <div className="reaction-inner">
-                {reaction.emoji instanceof Emoji ?
+                {isEmoji(reaction.emoji) ?
                     <img src={reaction.emoji.url} alt="azasu" draggable={false} className="emoji"/> :
                     <span className="emoji-text">{reaction.emoji.name}</span>}
                 <div className="reactionCount">{reaction.count}</div>
