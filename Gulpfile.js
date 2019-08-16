@@ -21,6 +21,7 @@ const config = {
             "recorder": recorder,
             "discord-controller": node,
             "tests": node,
+            "audioManager": node,
             "types": common,
             "chrome": chrome,
             "chrome-header": common
