@@ -46,14 +46,14 @@ async function main () {
 
         window.playAudio = async (buffer: ArrayBuffer) => {
             // source を作成
-            var source = audioContext.createBufferSource();
+            const source = audioContext.createBufferSource();
             // buffer をセット
             source.buffer = await audioContext.decodeAudioData(buffer);
             // context に connect
             source.connect(audioDestination);
             // 再生
             source.start(0);
-        }
+        };
 
         const mediaRecorder = new MediaRecorder(recordStream, {
             mimeType: "video/webm"
