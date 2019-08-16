@@ -29,8 +29,9 @@ async function main () {
             window.requestAnimationFrame(tick);
         };
         const recordStream = new MediaStream();
+        (window as any).recordStream = recordStream;
         for (let track of canvas.captureStream().getTracks()) {
-            recordStream.addTrack(track)
+            recordStream.addTrack(track);
         }
         const audioContext = new AudioContext();
         const audioDestination = audioContext.createMediaStreamDestination();
