@@ -11,6 +11,7 @@
     "discord.js": "^11.5.1",
     "highlight.js": "^9.15.9",
     "node-opus": "^0.3.2",
+    "puppeteer": "^1.19.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0"
   },
