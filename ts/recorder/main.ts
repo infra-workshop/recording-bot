@@ -27,7 +27,35 @@ async function main () {
             ctx.drawImage(video1, 10, 10, 1280, 720, 0, 0, 1280, 720);
             window.requestAnimationFrame(tick);
         };
-        const mediaRecorder = new MediaRecorder(canvas.captureStream(), {
+        const recordStream = new MediaStream();
+        for (let track of canvas.captureStream().getTracks()) {
+            recordStream.addTrack(track)
+        }
+        const audioContext = new AudioContext();
+        const audioDestination = audioContext.createMediaStreamDestination();
+        const oscillator = audioContext.createOscillator();
+
+        oscillator.type = 'sine';
+        oscillator.frequency.value = 0; // 値はHz(ヘルツ)
+        oscillator.connect(audioDestination);
+        oscillator.start();
+
+        for (let track of audioDestination.stream.getTracks()) {
+            recordStream.addTrack(track)
+        }
+
+        window.playAudio = async (buffer: ArrayBuffer) => {
+            // source を作成
+            var source = audioContext.createBufferSource();
+            // buffer をセット
+            source.buffer = await audioContext.decodeAudioData(buffer);
+            // context に connect
+            source.connect(audioDestination);
+            // 再生
+            source.start(0);
+        }
+
+        const mediaRecorder = new MediaRecorder(recordStream, {
             mimeType: "video/webm"
         });
         video1.addEventListener("loadedmetadata", () => {

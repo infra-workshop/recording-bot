@@ -5,6 +5,7 @@ export default undefined;
 
 declare global {
     interface Window {
+        playAudio(buffer: ArrayBuffer): Promise<void>;
         addMessage(messageInfo: Message): void
 
         removeMessage(messageInfo: Message): void
