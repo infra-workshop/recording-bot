@@ -13,7 +13,8 @@
     "node-opus": "^0.3.2",
     "puppeteer": "^1.19.0",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "trim-margin": "^1.0.4"
   },
   "devDependencies": {
     "@types/chai": "^4.2.0",
