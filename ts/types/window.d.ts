@@ -1,5 +1,5 @@
 import {Message, MessageReaction} from "../common-objects/constant-discord-elements";
-import {Snowflake} from "ts/markdown/discord.js";
+import {Snowflake} from "discord.js";
 
 export default undefined;
 
