@@ -87,7 +87,6 @@ export class AudioManager extends EventEmitter {
                 break;
             }
         }
-        console.log("onTime");
         if (audios.length == 0)
             this.emit("audio", nullBuff);
         else

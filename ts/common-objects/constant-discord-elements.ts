@@ -7,6 +7,7 @@ import {
     ReactionEmoji as DiscordReactionEmoji
 } from "discord.js";
 import {JSONObject} from "puppeteer";
+import formatter from "./message-formatter";
 
 type Optionals<T> = {
     [P in keyof T]?: T[P]
@@ -15,7 +16,7 @@ type Optionals<T> = {
 export interface Message extends JSONObject {
     readonly author: User;
     readonly reactions: MessageReaction[];
-    readonly content: string;
+    readonly contentHtml: string;
     readonly id: Snowflake;
 }
 
@@ -23,16 +24,16 @@ export function newMessage(base: DiscordMessage): Message {
     return {
         author: newUser(base.author),
         reactions: base.reactions.array().map(r => newMessageReaction(r)),
-        content: base.content,
+        contentHtml: formatter.format(base),
         id: base.id,
     };
 }
 
-export function copyMessage(base: Message, {author = base.author, reactions = base.reactions, content = base.content, id = base.id}: Optionals<Message> = {}): Message {
+export function copyMessage(base: Message, {author = base.author, reactions = base.reactions, contentHtml = base.contentHtml, id = base.id}: Optionals<Message> = {}): Message {
     return {
         author: author,
         reactions: reactions,
-        content: content,
+        contentHtml: contentHtml,
         id: id,
     }
 }

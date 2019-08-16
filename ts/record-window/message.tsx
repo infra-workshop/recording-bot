@@ -3,7 +3,6 @@
 
 import {Emoji, isEmoji, Message, MessageReaction, User} from "../common-objects/constant-discord-elements";
 import * as React from "react";
-import messageFormatter from "./message-formatter";
 
 interface MessageDataProps {
     isFirsInGroup: boolean
@@ -15,7 +14,7 @@ export function MessageData({isFirsInGroup, messageInfo}: MessageDataProps) {
         <div className='message-data'>
             {isFirsInGroup && <UserInfo userInfo={messageInfo.author}/>}
             <div className="message">
-                <div className="message-body" dangerouslySetInnerHTML={{__html:messageFormatter.format(messageInfo)}}/>
+                <div className="message-body" dangerouslySetInnerHTML={{__html: messageInfo.contentHtml}}/>
                 <div className="reactions-div">
                     <Reactions reactions={messageInfo.reactions}/>
                 </div>
