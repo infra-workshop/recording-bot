@@ -41,7 +41,7 @@ const pcmSize = 2 /* byte */ * 2 /* channel */ * 48 * 1000 /* Hz */ * 0.02 /* se
 
 const nullBuff = Buffer.alloc(pcmSize);
 
-class AudioManager extends EventEmitter {
+export class AudioManager extends EventEmitter {
     private readonly receiver: VoiceReceiver;
 
     constructor(receiver: VoiceReceiver) {
