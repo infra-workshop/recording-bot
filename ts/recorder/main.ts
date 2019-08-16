@@ -1,4 +1,5 @@
 /// <reference path="../types/MediaRecorder.d.ts" />
+///<reference path="../types/window.d.ts"/>
 
 import "../chrome-header/header";
 
