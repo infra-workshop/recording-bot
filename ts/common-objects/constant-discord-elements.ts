@@ -6,12 +6,13 @@ import {
     Emoji as DiscordEmoji,
     ReactionEmoji as DiscordReactionEmoji
 } from "discord.js";
+import {JSONObject} from "puppeteer";
 
 type Optionals<T> = {
     [P in keyof T]?: T[P]
 }
 
-export interface Message {
+export interface Message extends JSONObject {
     readonly author: User;
     readonly reactions: MessageReaction[];
     readonly content: string;
@@ -36,7 +37,7 @@ export function copyMessage(base: Message, {author = base.author, reactions = ba
     }
 }
 
-export interface User {
+export interface User extends JSONObject {
     readonly discriminator: string;
     readonly id: Snowflake;
     readonly avatar: string;
@@ -52,7 +53,7 @@ export function newUser(base: DiscordUser): User {
     };
 }
 
-export interface MessageReaction {
+export interface MessageReaction  extends JSONObject {
     readonly emoji: Emoji | ReactionEmoji;
     readonly count: number;
 }
@@ -70,7 +71,7 @@ export function isEmoji(v: any): v is Emoji {
     return true;
 }
 
-export interface Emoji {
+export interface Emoji extends JSONObject {
     readonly url: string;
     readonly identifier: string;
 }
@@ -82,7 +83,7 @@ export function newEmoji(base: DiscordEmoji): Emoji {
     }
 }
 
-export interface ReactionEmoji {
+export interface ReactionEmoji extends JSONObject {
     readonly name: string;
     readonly identifier: string;
 }
