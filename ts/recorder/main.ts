@@ -3,6 +3,40 @@
 
 import "../chrome-header/header";
 
+class AudioPlayer {
+    private readonly connectTo: AudioNode;
+    private nextPlay = 0;
+
+    constructor(connectTo: AudioNode) {
+        this.connectTo = connectTo;
+    }
+
+    async onData(buffer: ArrayBuffer) {
+        try {
+            // source を作成
+            const source = this.connectTo.context.createBufferSource();
+            // buffer をセット
+            source.buffer = await this.connectTo.context.decodeAudioData(buffer);
+            // context に connect
+            source.connect(this.connectTo);
+            // 再生
+
+            if (this.nextPlay == 0) {
+                this.nextPlay = this.connectTo.context.currentTime + 0.5;
+            }
+            console.log("play at : " + this.nextPlay);
+            source.start(this.nextPlay);
+            this.nextPlay += source.buffer!.duration;
+        } catch (e) {
+            if (e instanceof DOMException) {
+                console.error("error", e.message, e);
+            } else {
+                console.error("error", e);
+            }
+        }
+    }
+}
+
 async function main () {
     try {
         await window.RecorderTabCapSupport.enable();
@@ -35,26 +69,25 @@ async function main () {
         }
         const audioContext = new AudioContext();
         const audioDestination = audioContext.createMediaStreamDestination();
-        const oscillator = audioContext.createOscillator();
 
+        const oscillator = audioContext.createOscillator();
         oscillator.type = 'sine';
-        oscillator.frequency.value = 0; // 値はHz(ヘルツ)
         oscillator.connect(audioDestination);
-        oscillator.start();
 
         for (let track of audioDestination.stream.getTracks()) {
             recordStream.addTrack(track)
         }
 
-        window.playAudio = async (buffer: ArrayBuffer) => {
-            // source を作成
-            const source = audioContext.createBufferSource();
-            // buffer をセット
-            source.buffer = await audioContext.decodeAudioData(buffer);
-            // context に connect
-            source.connect(audioDestination);
-            // 再生
-            source.start(0);
+        const players = new Map<string, AudioPlayer>();
+        window.startAudio = (user) => {
+            players.set(user, new AudioPlayer(audioDestination));
+        };
+        window.endAudio = (user) => {
+            players.set(user, new AudioPlayer(audioDestination));
+        };
+
+        window.playAudio = async (user: string, buffer: ArrayBuffer) => {
+            players.get(user) && players.get(user).onData(buffer);
         };
 
         const mediaRecorder = new MediaRecorder(recordStream, {

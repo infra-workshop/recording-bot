@@ -7,19 +7,15 @@ import {
     Channel, Snowflake, VoiceChannel, TextChannel
 } from "discord.js";
 import {Message, MessageReaction, newMessage, newMessageReaction} from "../common-objects/constant-discord-elements";
-import {AudioManager} from "../audioManager";
 
 interface DiscordControllerEvents {
     "add-message": [Message]
     "delete-message": [Message]
     "update-message": [Message]
     "update-reaction": [Snowflake, MessageReaction]
-    "on-voice": [Buffer]
 }
 
 export class DiscordController extends EventEmitter {
-    private manager: AudioManager;
-
     static async create(message: DiscordMessage): Promise<DiscordController>
     static async create(channel: TextChannel, voiceChannel: VoiceChannel): Promise<DiscordController>
     static async create(messageOrChannel: DiscordMessage|TextChannel, voiceChannelIn?: VoiceChannel): Promise<DiscordController> {
@@ -44,18 +40,11 @@ export class DiscordController extends EventEmitter {
         connection.on("authenticated", () => { console.log("authenticated"); });
         // create our voice receiver
         const receiver = connection.createReceiver();
-        const manager = new AudioManager(receiver);
-        return new DiscordController(manager, textChannel.client, textChannel);
+        return new DiscordController(textChannel.client, textChannel);
     }
 
-    private constructor(manager: AudioManager, client: Client, channel: TextChannel) {
+    private constructor(client: Client, channel: TextChannel) {
         super();
-
-        this.manager = manager;
-
-        manager.on("audio", buffer => {
-            this.emit("on-voice", buffer);
-        });
 
         const channelId = channel.id;
 
@@ -91,7 +80,7 @@ export class DiscordController extends EventEmitter {
     }
 
     emit<E extends keyof DiscordControllerEvents>(event: E | symbol, ...args: DiscordControllerEvents[E]): boolean {
-        return super.emit(event, args)
+        return super.emit(event, ...args)
     }
 
     on<E extends keyof DiscordControllerEvents>(event: E | symbol, listener: (...args: DiscordControllerEvents[E])=>void): this {
@@ -103,6 +92,5 @@ export class DiscordController extends EventEmitter {
     }
 
     destroy() {
-        this.manager.destroy();
     }
 }

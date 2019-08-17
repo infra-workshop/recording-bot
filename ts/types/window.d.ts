@@ -5,7 +5,10 @@ export default undefined;
 
 declare global {
     interface Window {
-        playAudio(buffer: ArrayBuffer): Promise<void>;
+        startAudio(user: Snowflake): void;
+        playAudio(user: Snowflake, buffer: ArrayBuffer): Promise<void>;
+        endAudio(user: Snowflake): void;
+
         addMessage(messageInfo: Message): void
 
         removeMessage(messageInfo: Message): void
