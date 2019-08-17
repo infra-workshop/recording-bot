@@ -20,8 +20,9 @@ export class WavCreator {
 
     constructor () {}
 
-    onPCM(buffer: Buffer) {
+    onPCM(buffer: Buffer): this {
         this.parts.push(buffer);
+        return this
     }
 
     make() {
