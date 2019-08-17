@@ -40,16 +40,18 @@ class AudioPlayer {
 async function main () {
     try {
         await window.RecorderTabCapSupport.enable();
-        console.log(window.innerWidth);
-        console.log(window.innerHeight);
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        console.log(width);
+        console.log(height);
         const screenStream = await window.RecorderTabCapSupport.getCapture({
             audio: false,
             video: {
                 mandatory: {
-                    minWidth: window.innerWidth,
-                    maxWidth: window.innerWidth,
-                    minHeight: window.innerHeight,
-                    maxHeight: window.innerHeight,
+                    minWidth: width,
+                    maxWidth: width,
+                    minHeight: height,
+                    maxHeight: height,
                 }
             } as any
         });
