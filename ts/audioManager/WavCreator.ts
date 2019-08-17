@@ -25,7 +25,7 @@ export class WavCreator {
         return this
     }
 
-    make() {
+    make(): Buffer {
         const wave = Buffer.concat(this.parts);
         // riff size
         wave.writeUInt32LE(wave.length - 8, 4);
