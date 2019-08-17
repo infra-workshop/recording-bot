@@ -1,20 +1,12 @@
 ///<reference path="../types/window.d.ts"/>
 
 
-import {
-    Client,
-    Message as DiscordMessage,
-    MessageReaction as DiscordMessageReaction,
-    Snowflake,
-    User as DiscordUser
-} from "discord.js";
-import {Message, MessageReaction, newMessage, newMessageReaction} from "../common-objects/constant-discord-elements";
+import {Snowflake} from "discord.js";
+import {Message, MessageReaction} from "../common-objects/constant-discord-elements";
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 import {Content} from "./content";
 import {RefObject} from "react";
-
-const tokens = require("../../resources/tokens.json");
 
 /**
  * 文字列を16進数に変換する
@@ -57,48 +49,3 @@ window.addMessage = addMessage;
 window.removeMessage = removeMessage;
 window.editMessage = editMessage;
 window.updateReaction = updateReaction;
-
-const client = new Client();
-
-client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-});
-
-(async () => {
-    await client.login(tokens.discord);
-    console.log(`login success!`);
-
-    console.log("add click secs");
-
-    client.on('message', async (message: DiscordMessage) => {
-        if (message.type == "DEFAULT") {
-            await addMessage(newMessage(message));
-            if (message.content === 'ping') {
-                await message.reply('Pong!');
-            }
-        } else {
-            console.warn("unknown type message");
-            console.warn(message);
-        }
-    });
-
-    client.on('messageDelete', async (message: DiscordMessage) => { removeMessage(newMessage(message)) });
-
-    client.on("messageUpdate", async (oldMessage: DiscordMessage, new_Message: DiscordMessage) => {
-        console.log(`oldMessage.id: ${oldMessage.id}`);
-        console.log(`newMessage.id: ${new_Message.id}`);
-        editMessage(newMessage(new_Message));
-    });
-
-    client.on("messageReactionAdd", async (messageReaction: DiscordMessageReaction, user: DiscordUser) => {
-        updateReaction(messageReaction.message.id, newMessageReaction(messageReaction))
-    });
-
-    client.on("messageReactionRemove", async (messageReaction: DiscordMessageReaction, user: DiscordUser) => {
-        updateReaction(messageReaction.message.id, newMessageReaction(messageReaction))
-    });
-
-    await new Promise((resolve) => { setTimeout(resolve, 10000); });
-
-
-})();
