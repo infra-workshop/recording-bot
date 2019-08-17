@@ -27,7 +27,7 @@ const getAvatar = (user: User) => {
     if (user.avatar) {
         return (`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=40`);
     } else {
-        return (`https://cdn.discordapp.com/embed/avatars/${Number(user.discriminator.charAt(-1)) % 5}.png?size=40`);
+        return (`https://cdn.discordapp.com/embed/avatars/${Number(user.discriminator.substr(-1)) % 5}.png?size=40`);
     }
 };
 
