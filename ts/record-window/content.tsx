@@ -37,7 +37,7 @@ export class Content extends React.Component<ContentProps, ContentState> {
 
         return (
             <div className="content">
-                {groupedMessages.map(([user, messages]) => <MessageGroup userInfo={user} messages={messages} key={user.id+(messages.length + "")}/>)}
+                {groupedMessages.map(([user, messages]) => <MessageGroup userInfo={user} messages={messages} key={user.id+"-"+(messages[0].id)}/>)}
                 <div ref={(ref) => this.endOfMsg = ref}/>
             </div>
         );
