@@ -33,7 +33,7 @@ export class RecorderController {
         this.emitter.on("set-screen-url", async (screenUrl: string) => {
             await page.evaluate((screenUrl) => {
                 (document.getElementById("screen") as HTMLIFrameElement).src = screenUrl
-            }, this.screenUrl);
+            }, screenUrl);
         });
 
         this.setScreenUrl(this.screenUrl);
@@ -55,7 +55,7 @@ export class RecorderController {
         });
 
         const connection = this.voiceConnection;
-        // create our voice receiver
+
         const receiver = connection.createReceiver();
 
         connection.on('speaking', async (user, speaking) => {
