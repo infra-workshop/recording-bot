@@ -15,5 +15,7 @@ declare global {
         updateReaction(messageId: Snowflake, newReaction: MessageReaction): void
 
         stopRecording(): Promise<Blob>
+
+        takeShot(): Promise<Blob>
     }
 }

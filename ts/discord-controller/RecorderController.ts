@@ -110,5 +110,24 @@ export class RecorderController {
 
         return Buffer.from(dataUrl.split(",")[1], 'base64')
     }
+
+    async takeShot(): Promise<Buffer> {
+        const dataUrl =await this.page.evaluate(async () => {
+            const readAsDataUrl = (blob: Blob) => new Promise<string>((resolve, reject) => {
+                const fr = new FileReader();
+                fr.onload = e => {
+                    resolve(fr.result as string);
+                };
+                fr.onerror = e => {
+                    reject(fr.error)
+                };
+                fr.readAsDataURL(blob);
+            });
+            const blob = await window.takeShot();
+            return await readAsDataUrl(blob);
+        });
+
+        return Buffer.from(dataUrl.split(",")[1], 'base64')
+    }
 }
 

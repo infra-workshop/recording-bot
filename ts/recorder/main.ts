@@ -102,6 +102,8 @@ async function main () {
             });
         });
 
+        window.takeShot = () => new Promise<Blob>(resolve => { canvas.toBlob(blob => resolve(blob)) });
+
         const mediaRecorder = new MediaRecorder(recordStream, {
             mimeType: "video/webm"
         });
