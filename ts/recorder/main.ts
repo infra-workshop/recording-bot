@@ -92,6 +92,16 @@ async function main () {
             players.get(user) && players.get(user).onData(buffer);
         };
 
+        window.stopRecording = () => new Promise((resolve, reject) => {
+            mediaRecorder.stop();
+            mediaRecorder.addEventListener("error", (e) => {
+                reject(e)
+            });
+            mediaRecorder.addEventListener("dataavailable", (e) => {
+                resolve(e.data);
+            });
+        });
+
         const mediaRecorder = new MediaRecorder(recordStream, {
             mimeType: "video/webm"
         });
@@ -99,16 +109,12 @@ async function main () {
             tick();
             mediaRecorder.start()
         });
-        stop.addEventListener("click", () => {
-            mediaRecorder.stop();
-            mediaRecorder.addEventListener("dataavailable", (e) => {
-                const download = document.getElementById("download") as HTMLAnchorElement;
-                download.download = "video.webm";
-                download.href = window.URL.createObjectURL(e.data);
-            });
+        stop.addEventListener("click", async () => {
+            const download = document.getElementById("download") as HTMLAnchorElement;
+            download.download = "video.webm";
+            download.href = window.URL.createObjectURL(await window.stopRecording());
         });
-        const play1 = video1.play();
-        await play1;
+        await video1.play();
     } catch (e) {
         console.error(e);
     }

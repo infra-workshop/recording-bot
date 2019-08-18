@@ -10,11 +10,10 @@ declare global {
         endAudio(user: Snowflake): void;
 
         addMessage(messageInfo: Message): void
-
         removeMessage(messageInfo: Message): void
-
         editMessage(newMessage: Message): void
-
         updateReaction(messageId: Snowflake, newReaction: MessageReaction): void
+
+        stopRecording(): Promise<Blob>
     }
 }

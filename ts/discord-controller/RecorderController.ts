@@ -81,5 +81,34 @@ export class RecorderController {
             }
         });
     }
+
+    isValid(): boolean {
+        if (!this.page) return false;
+        if (this.page.isClosed()) return false;
+        return true;
+    }
+
+    async stop(): Promise<Buffer> {
+        const dataUrl =await this.page.evaluate(async () => {
+            const readAsDataUrl = (blob: Blob) => new Promise<string>((resolve, reject) => {
+                const fr = new FileReader();
+                fr.onload = e => {
+                    resolve(fr.result as string);
+                };
+                fr.onerror = e => {
+                    reject(fr.error)
+                };
+                fr.readAsDataURL(blob);
+            });
+            const blob = await window.stopRecording();
+            return await readAsDataUrl(blob);
+        });
+
+        this.controller.destroy();
+        this.voiceConnection.disconnect();
+        await this.page.close();
+
+        return Buffer.from(dataUrl.split(",")[1], 'base64')
+    }
 }
 
