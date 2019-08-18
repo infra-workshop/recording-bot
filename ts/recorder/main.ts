@@ -17,6 +17,7 @@ class AudioPlayer {
 
     async onData(buffer: ArrayBuffer) {
         try {
+            this.nodes && this.nodes.push(buffer.slice(0));
             // source を作成
             const source = this.connectTo.context.createBufferSource();
             // buffer をセット
@@ -31,7 +32,6 @@ class AudioPlayer {
             console.log("play at : " + this.nextPlay);
             source.start(this.nextPlay);
             this.nextPlay += source.buffer!.duration;
-            this.nodes && this.nodes.push(buffer)
         } catch (e) {
             if (e instanceof DOMException) {
                 console.error("error", e.message, e);
