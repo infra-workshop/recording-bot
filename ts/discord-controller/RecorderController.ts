@@ -58,7 +58,7 @@ export class RecorderController {
             const creator = new WavCreator();
             voices.map(it => Buffer.from(it, "base64")).forEach(it => creator.onPCM(it));
             const member = controller.channel.guild.member(user);
-            controller.channel.sendFile(creator.make(), member.displayName + ".wav", `your voice here!`, { reply: user })
+            controller.channel.send(`your voice here!`, { reply: user, file: { attachment: creator.make(), name: member.displayName + ".wav" } })
         });
         await page.evaluate(() => {
             window.sendDebugVoice = async (user: string, voices: Uint8Array[]) => {
