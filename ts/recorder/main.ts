@@ -5,10 +5,14 @@ import "../chrome-header/header";
 
 class AudioPlayer {
     private readonly connectTo: AudioNode;
+    private readonly nodes: ArrayBuffer[];
+    private readonly user: string;
     private nextPlay = 0;
 
-    constructor(connectTo: AudioNode) {
+    constructor(user: string, connectTo: AudioNode, debug: boolean) {
         this.connectTo = connectTo;
+        this.user = user;
+        if (debug) this.nodes = [];
     }
 
     async onData(buffer: ArrayBuffer) {
@@ -27,6 +31,7 @@ class AudioPlayer {
             console.log("play at : " + this.nextPlay);
             source.start(this.nextPlay);
             this.nextPlay += source.buffer!.duration;
+            this.nodes && this.nodes.push(buffer)
         } catch (e) {
             if (e instanceof DOMException) {
                 console.error("error", e.message, e);
@@ -35,9 +40,16 @@ class AudioPlayer {
             }
         }
     }
+
+    async onEnd() {
+        if (this.nodes) {
+            window.sendDebugVoice(this.user, this.nodes.map(it => new Uint8Array(it)));
+        }
+    }
 }
 
 async function main () {
+    let debug: boolean = false;
     try {
         await window.RecorderTabCapSupport.enable();
         const width = window.innerWidth;
@@ -82,10 +94,11 @@ async function main () {
 
         const players = new Map<string, AudioPlayer>();
         window.startAudio = (user) => {
-            players.set(user, new AudioPlayer(audioDestination));
+            players.set(user, new AudioPlayer(user, audioDestination, debug));
         };
         window.endAudio = (user) => {
-            players.set(user, new AudioPlayer(audioDestination));
+            players.get(user) && players.get(user).onEnd();
+            players.delete(user);
         };
 
         window.playAudio = async (user: string, buffer: ArrayBuffer) => {
@@ -103,6 +116,7 @@ async function main () {
         });
 
         window.takeShot = () => new Promise<Blob>(resolve => { canvas.toBlob(blob => resolve(blob)) });
+        window.debug = (on: boolean) => debug = on;
 
         const mediaRecorder = new MediaRecorder(recordStream, {
             mimeType: "video/webm"

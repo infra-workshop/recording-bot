@@ -17,5 +17,9 @@ declare global {
         stopRecording(): Promise<Blob>
 
         takeShot(): Promise<Blob>
+        debug(on: boolean): void
+
+        // from node
+        sendDebugVoice(user: string, voiceClips: Uint8Array[]): void
     }
 }

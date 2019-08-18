@@ -54,6 +54,19 @@ export class RecorderController {
             await page.evaluate((msgId, reaction) => { window.updateReaction(msgId, reaction) }, msgId, reaction);
         });
 
+        await page.exposeFunction("sendDebugVoice_internal", async (user: string, voices: string[]) => {
+            const creator = new WavCreator();
+            voices.map(it => Buffer.from(it, "base64")).forEach(it => creator.onPCM(it));
+            const member = controller.channel.guild.member(user);
+            controller.channel.sendFile(creator.make(), member.displayName + ".wav", `your voice here!`, { reply: user })
+        });
+        await page.evaluate(() => {
+            window.sendDebugVoice = async (user: string, voices: Uint8Array[]) => {
+                // @ts-ignore
+                sendDebugVoice_internal(user, voices.map(voice => base64js.fromByteArray(voice)));
+            }
+        });
+
         const connection = this.voiceConnection;
 
         const receiver = connection.createReceiver();

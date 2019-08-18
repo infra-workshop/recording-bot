@@ -45,11 +45,13 @@ export class DiscordController extends EventEmitter {
 
     client: Client;
     eventHandlers: {[event: string]: (...args: any)=>void} = {};
+    channel: TextChannel;
 
     private constructor(client: Client, channel: TextChannel) {
         super();
 
         const channelId = channel.id;
+        this.channel = channel;
         this.client = client;
 
         this.eventHandlers["message"] = async (message: DiscordMessage) => {
