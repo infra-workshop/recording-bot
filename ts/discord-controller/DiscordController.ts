@@ -43,40 +43,48 @@ export class DiscordController extends EventEmitter {
         return new DiscordController(textChannel.client, textChannel);
     }
 
+    client: Client;
+    eventHandlers: {[event: string]: (...args: any)=>void} = {};
+
     private constructor(client: Client, channel: TextChannel) {
         super();
 
         const channelId = channel.id;
+        this.client = client;
 
-        client.on('message', async (message: DiscordMessage) => {
+        this.eventHandlers["message"] = async (message: DiscordMessage) => {
             if (message.channel.id == channelId) {
                 this.emit("add-message", newMessage(message))
             }
-        });
+        };
 
-        client.on('messageDelete', async (message: DiscordMessage) => {
+        this.eventHandlers["messageDelete"] = async (message: DiscordMessage) => {
             if (message.channel.id == channelId) {
                 this.emit("delete-message", newMessage(message))
             }
-        });
+        };
 
-        client.on("messageUpdate", async (oldMessage: DiscordMessage, new_Message: DiscordMessage) => {
+        this.eventHandlers["messageUpdate"] = async (oldMessage: DiscordMessage, new_Message: DiscordMessage) => {
             if (new_Message.channel.id == channelId) {
                 this.emit("update-message", newMessage(new_Message))
             }
-        });
+        };
 
-        client.on("messageReactionAdd", async (messageReaction: DiscordMessageReaction, user: DiscordUser) => {
+        this.eventHandlers["messageReactionAdd"] = async (messageReaction: DiscordMessageReaction, user: DiscordUser) => {
             if (messageReaction.message.channel.id == channelId) {
                 this.emit("update-reaction", messageReaction.message.id, newMessageReaction(messageReaction))
             }
-        });
+        };
 
-        client.on("messageReactionRemove", async (messageReaction: DiscordMessageReaction, user: DiscordUser) => {
+        this.eventHandlers["messageReactionRemove"] = async (messageReaction: DiscordMessageReaction, user: DiscordUser) => {
             if (messageReaction.message.channel.id == channelId) {
                 this.emit("update-reaction", messageReaction.message.id, newMessageReaction(messageReaction))
             }
-        });
+        };
+
+        for (let event in this.eventHandlers) {
+            client.on(event, this.eventHandlers[event])
+        }
     }
 
     emit<E extends keyof DiscordControllerEvents>(event: E | symbol, ...args: DiscordControllerEvents[E]): boolean {
@@ -92,5 +100,8 @@ export class DiscordController extends EventEmitter {
     }
 
     destroy() {
+        for (let event in this.eventHandlers) {
+            this.client.removeListener(event, this.eventHandlers[event])
+        }
     }
 }
