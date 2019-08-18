@@ -124,6 +124,12 @@ export class RecorderController {
         return Buffer.from(dataUrl.split(",")[1], 'base64')
     }
 
+    private debug = false;
+    async toggleDebug() {
+        this.debug = !this.debug;
+        await this.page.evaluate((debug) => { window.debug(debug) }, this.debug);
+    }
+
     async takeShot(): Promise<Buffer> {
         const dataUrl =await this.page.evaluate(async () => {
             const readAsDataUrl = (blob: Blob) => new Promise<string>((resolve, reject) => {
