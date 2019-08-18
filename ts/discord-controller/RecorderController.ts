@@ -4,6 +4,7 @@ import {WavCreator} from "../audioManager/WavCreator";
 import {Page} from "puppeteer";
 import {VoiceConnection} from "discord.js";
 import {EventEmitter} from "events";
+import {ZeroStream} from "../audioManager/ZeroStream";
 
 export class RecorderController {
     private readonly page: Page;
@@ -70,6 +71,7 @@ export class RecorderController {
         const connection = this.voiceConnection;
 
         const receiver = connection.createReceiver();
+        receiver.voiceConnection.playConvertedStream(ZeroStream);
 
         connection.on('speaking', async (user, speaking) => {
             if (speaking) {
