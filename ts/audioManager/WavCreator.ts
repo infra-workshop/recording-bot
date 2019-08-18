@@ -20,11 +20,17 @@ export class WavCreator {
 
     constructor () {}
 
-    onPCM(buffer: Buffer) {
+    onPCM(buffer: Buffer): this {
         this.parts.push(buffer);
+        return this
     }
 
-    make() {
+    onWav(buffer: Buffer): this {
+        this.parts.push(buffer.slice(buffer.readUInt32LE(16) + 28));
+        return this
+    }
+
+    make(): Buffer {
         const wave = Buffer.concat(this.parts);
         // riff size
         wave.writeUInt32LE(wave.length - 8, 4);

@@ -1,5 +1,5 @@
-import {Message as DiscordMessage, MessageReaction as DiscordMessageReaction} from "discord.js";
-import {Message, MessageReaction, User} from "./constant-discord-elements";
+import {Message as DiscordMessage, MessageReaction as DiscordMessageReaction, Snowflake} from "discord.js";
+import {copyMessage, Message, MessageReaction, User} from "../common-objects/constant-discord-elements";
 import * as React from "react";
 import {MessageData} from "./message";
 import * as ReactDOM from "react-dom";
@@ -37,7 +37,7 @@ export class Content extends React.Component<ContentProps, ContentState> {
 
         return (
             <div className="content">
-                {groupedMessages.map(([user, messages]) => <MessageGroup userInfo={user} messages={messages} key={user.id+(messages.length + "")}/>)}
+                {groupedMessages.map(([user, messages]) => <MessageGroup userInfo={user} messages={messages} key={user.id+"-"+(messages[0].id)}/>)}
                 <div ref={(ref) => this.endOfMsg = ref}/>
             </div>
         );
@@ -60,43 +60,43 @@ export class Content extends React.Component<ContentProps, ContentState> {
         return groupedMessages
     }
 
-    addMessage(messageInfo: DiscordMessage) {
+    addMessage(messageInfo: Message) {
         this.setState((prev) => ({
-            messages: prev.messages.concat(new Message(messageInfo))
+            messages: prev.messages.concat(messageInfo)
         }))
     }
 
-    removeMessage(messageInfo: DiscordMessage) {
+    removeMessage(messageInfo: Message) {
         this.setState((prev) => ({
             messages: prev.messages.filter(msg => msg.id != messageInfo.id)
         }))
     }
 
-    editMessage(newMessage: DiscordMessage) {
+    editMessage(newMessage: Message) {
         this.setState((prev) => {
             const messages = prev.messages.slice();
             const idx = messages.findIndex(msg => msg.id == newMessage.id);
             if (idx == -1) return null;
-            messages[idx] = new Message(newMessage);
+            messages[idx] = newMessage;
             return {
                 messages: messages
             }
         })
     }
 
-    updateReaction(newReaction: DiscordMessageReaction) {
+    updateReaction(messageId: Snowflake, newReaction: MessageReaction) {
         this.setState((prev) => {
             const messages = prev.messages.slice();
-            const idx = messages.findIndex(msg => msg.id == newReaction.message.id);
+            const idx = messages.findIndex(msg => msg.id == messageId);
             if (idx == -1) return null;
             const reactions = messages[idx].reactions.slice();
             const rIdx = reactions.findIndex(it => it.emoji.identifier == newReaction.emoji.identifier);
             if (rIdx == -1) {
-                reactions.push(new MessageReaction(newReaction));
+                reactions.push(newReaction);
             } else {
-                reactions[rIdx] = new MessageReaction(newReaction);
+                reactions[rIdx] = newReaction;
             }
-            messages[idx] = messages[idx].copy({reactions});
+            messages[idx] = copyMessage(messages[idx], {reactions});
             return {
                 messages: messages
             }

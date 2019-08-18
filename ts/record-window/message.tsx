@@ -1,9 +1,8 @@
 ///<reference path="../types/react-html-parser.d.ts"/>
 
 
-import {Emoji, Message, MessageReaction, User} from "./constant-discord-elements";
+import {Emoji, isEmoji, Message, MessageReaction, User} from "../common-objects/constant-discord-elements";
 import * as React from "react";
-import messageFormatter from "./message-formatter";
 
 interface MessageDataProps {
     isFirsInGroup: boolean
@@ -15,7 +14,7 @@ export function MessageData({isFirsInGroup, messageInfo}: MessageDataProps) {
         <div className='message-data'>
             {isFirsInGroup && <UserInfo userInfo={messageInfo.author}/>}
             <div className="message">
-                <div className="message-body" dangerouslySetInnerHTML={{__html:messageFormatter.format(messageInfo)}}/>
+                <div className="message-body" dangerouslySetInnerHTML={{__html: messageInfo.contentHtml}}/>
                 <div className="reactions-div">
                     <Reactions reactions={messageInfo.reactions}/>
                 </div>
@@ -28,7 +27,7 @@ const getAvatar = (user: User) => {
     if (user.avatar) {
         return (`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=40`);
     } else {
-        return (`https://cdn.discordapp.com/embed/avatars/${Number(user.discriminator.charAt(-1)) % 5}.png?size=40`);
+        return (`https://cdn.discordapp.com/embed/avatars/${Number(user.discriminator.substr(-1)) % 5}.png?size=40`);
     }
 };
 
@@ -66,7 +65,7 @@ function Reaction({reaction}: ReactionProps) {
     return (
         <div className="reaction">
             <div className="reaction-inner">
-                {reaction.emoji instanceof Emoji ?
+                {isEmoji(reaction.emoji) ?
                     <img src={reaction.emoji.url} alt="azasu" draggable={false} className="emoji"/> :
                     <span className="emoji-text">{reaction.emoji.name}</span>}
                 <div className="reactionCount">{reaction.count}</div>

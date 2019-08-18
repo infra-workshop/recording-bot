@@ -250,3 +250,4 @@ $RECYCLE.BIN/
 dist/
 bundle*.js
 resources/tokens.json
+video/

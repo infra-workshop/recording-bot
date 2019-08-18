@@ -1,11 +1,12 @@
-import {Client, Emoji, Message, MessageReaction, User} from 'discord.js';
-import messageFormatter from "./message-formatter";
+///<reference path="../types/window.d.ts"/>
+
+
+import {Snowflake} from "discord.js";
+import {Message, MessageReaction} from "../common-objects/constant-discord-elements";
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 import {Content} from "./content";
 import {RefObject} from "react";
-
-const tokens = require("../../resources/tokens.json");
 
 /**
  * 文字列を16進数に変換する
@@ -20,7 +21,7 @@ function hex(s: string): string {
 }
 
 
-const content: RefObject<Content> = React.createRef()
+const content: RefObject<Content> = React.createRef();
 
 ReactDOM.render(
     <Content ref={content}/>,
@@ -28,63 +29,23 @@ ReactDOM.render(
 );
 
 
-function addMessage(messageInfo: Message) {
+export function addMessage(messageInfo: Message) {
     content.current.addMessage(messageInfo)
 }
 
-function removeMessage(messageInfo: Message) {
+export function removeMessage(messageInfo: Message) {
     content.current.removeMessage(messageInfo)
 }
 
-function editMessage(newMessage: Message) {
+export function editMessage(newMessage: Message) {
     content.current.editMessage(newMessage)
 }
 
-function updateReaction(reactionInfo: MessageReaction) {
-    content.current.updateReaction(reactionInfo)
+export function updateReaction(messageId: Snowflake, newReaction: MessageReaction) {
+    content.current.updateReaction(messageId, newReaction)
 }
 
-const client = new Client();
-
-client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-});
-
-(async () => {
-    await client.login(tokens.discord);
-    console.log(`login success!`);
-
-    console.log("add click secs");
-
-    client.on('message', async (message: Message) => {
-        if (message.type == "DEFAULT") {
-            await addMessage(message);
-            if (message.content === 'ping') {
-                await message.reply('Pong!');
-            }
-        } else {
-            console.warn("unknown type message");
-            console.warn(message);
-        }
-    });
-
-    client.on('messageDelete', async (message: Message) => { removeMessage(message) });
-
-    client.on("messageUpdate", async (oldMessage: Message, newMessage: Message) => {
-        console.log(`oldMessage.id: ${oldMessage.id}`);
-        console.log(`newMessage.id: ${newMessage.id}`);
-        editMessage(newMessage);
-    });
-
-    client.on("messageReactionAdd", async (messageReaction: MessageReaction, user: User) => {
-        updateReaction(messageReaction)
-    });
-
-    client.on("messageReactionRemove", async (messageReaction: MessageReaction, user: User) => {
-        updateReaction(messageReaction)
-    });
-
-    await new Promise((resolve) => { setTimeout(resolve, 10000); });
-
-
-})();
+window.addMessage = addMessage;
+window.removeMessage = removeMessage;
+window.editMessage = editMessage;
+window.updateReaction = updateReaction;
