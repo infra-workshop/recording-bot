@@ -81,7 +81,7 @@ export class RecorderController {
                     }, user.id, new WavCreator().onPCM(data).make().toString("base64"));
                 });
 
-                stream.on("close", async () => {
+                stream.on("end", async () => {
                     await page.evaluate(async (user: string) => {
                         window.endAudio(user);
                     }, user.id);
