@@ -1,6 +1,7 @@
 ///<reference path="../types/window.d.ts"/>
 
 
+import * as crypto from "crypto";
 import {Client, RichEmbed, TextChannel} from "discord.js";
 import * as puppeteer from "puppeteer";
 import * as path from "path";
@@ -14,6 +15,7 @@ import {Readable} from "stream";
 import {platform} from "os";
 import {Browser, LaunchOptions} from "puppeteer";
 import * as os from "os";
+import * as util from "util";
 
 const rootDir = path.join(__dirname, "../../");
 
@@ -41,17 +43,37 @@ function formatDate(date: Date) {
         '-' + pad(date.getSeconds());
 }
 
+const hexadecimalToIDAlphabetMap: { [key: string]: string } = {};
+
+for (let char of "0123456789abcdef") {
+    hexadecimalToIDAlphabetMap[char] = "abcdefghijklmnop".charAt(parseInt(char, 16))
+    hexadecimalToIDAlphabetMap[char.toUpperCase()] = "abcdefghijklmnop".charAt(parseInt(char, 16))
+}
+
+function convertHexadecimalToIDAlphabet(hex: string): string {
+    return hex.split("").map(it => hexadecimalToIDAlphabetMap[it]).join("")
+}
+
+function generateExtensionIdByPath(path: string) {
+    return convertHexadecimalToIDAlphabet(crypto.createHash("sha256").update(path).digest("hex")).substr(0, 32)
+}
+
 (async () => {
     await client.login(tokens.discord);
     console.log(`login success!`);
 
+    const extensionPath = path.join(__dirname, "../../chrome");
+    const extensionId = generateExtensionIdByPath(extensionPath);
+
+    console.log(`extension-path: ${extensionPath}`);
+    console.log(`extension-id: ${extensionId}`);
+
     const options: LaunchOptions = {
         headless: false,
-        userDataDir: path.join(__dirname, "../../../chrome-user-dir"),
         ignoreDefaultArgs: ["--disable-extensions"],
         defaultViewport: null,
-        env: {},
-        args: ["--whitelisted-extension-id=onodnlhadbmnlkmhamaoeefkoecledbm", '--window-size=1500,1200', '--disable-web-security','--disable-infobars', '--no-sandbox', '--disable-setuid-sandbox'],
+        env: {},//docker.for.mac.localhost:0
+        args: [`--whitelisted-extension-id=${extensionId}`, `--load-extension=${extensionPath}`, '--window-size=1500,1200', '--disable-web-security','--disable-infobars', '--no-sandbox', '--disable-setuid-sandbox'],
     };
 
     if (process.argv[2]) {
@@ -136,8 +158,8 @@ function formatDate(date: Date) {
 
                     const filePath = path.join(rootDir, "../video/" +formatDate(new Date()) + ".webm");
 
-                    fs.existsSync(path.join(rootDir, "../video/")) || await fs.promises.mkdir(path.join(rootDir, "../video/"));
-                    await fs.promises.writeFile(filePath, data);
+                    fs.existsSync(path.join(rootDir, "../video/")) || await util.promisify(fs.mkdir)(path.join(rootDir, "../video/"));
+                    await util.promisify(fs.writeFile)(filePath, data);
 
                     await message.reply(`record file is saved to ${filePath}`);
 
