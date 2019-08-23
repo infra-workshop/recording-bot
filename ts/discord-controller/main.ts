@@ -9,6 +9,11 @@ import {trimMargin} from "trim-margin";
 import {WavCreator} from "../audioManager/WavCreator";
 import {RecorderController} from "./RecorderController";
 import * as fs from "fs";
+import * as child_process from "child_process";
+import {Readable} from "stream";
+import {platform} from "os";
+import {Browser, LaunchOptions} from "puppeteer";
+import * as os from "os";
 
 const rootDir = path.join(__dirname, "../../");
 
@@ -40,17 +45,30 @@ function formatDate(date: Date) {
     await client.login(tokens.discord);
     console.log(`login success!`);
 
-    const browser = await puppeteer.launch({
+    const options: LaunchOptions = {
         headless: false,
         userDataDir: path.join(__dirname, "../../../chrome-user-dir"),
         ignoreDefaultArgs: ["--disable-extensions"],
         defaultViewport: null,
-        args: ["--whitelisted-extension-id=onodnlhadbmnlkmhamaoeefkoecledbm", '--window-size=1500,1200', '--disable-web-security','--disable-infobars'],
-    });
+        env: {},
+        args: ["--whitelisted-extension-id=onodnlhadbmnlkmhamaoeefkoecledbm", '--window-size=1500,1200', '--disable-web-security','--disable-infobars', '--no-sandbox', '--disable-setuid-sandbox'],
+    };
 
-    await Promise.all((await browser.pages()).map(page => page.close()));
+    if (process.argv[2]) {
+        options.env["DISPLAY"] = ":" + process.argv[2]
+    }
+
+    const browser = await puppeteer.launch(options);
+
+    if (os.platform() == 'darwin')
+        await Promise.all((await browser.pages()).map(page => page.close()));
 
     console.log(`launching browser success!`);
+
+    browser.on('disconnected', () => {
+        console.log("disconnected IDK why");
+        process.exit(1);
+    });
 
     let screenUrl: string;
     let recorderController: RecorderController;
