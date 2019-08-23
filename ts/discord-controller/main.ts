@@ -55,7 +55,7 @@ function formatDate(date: Date) {
     };
 
     if (process.argv[2]) {
-        options.env["DISPLAY"] = ":" + process.argv[2]
+        options.env["DISPLAY"] = process.argv[2]
     }
 
     const browser = await puppeteer.launch(options);
