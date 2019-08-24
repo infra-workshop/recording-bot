@@ -1,0 +1,14 @@
+coverage
+dist
+.idea
+chrome-user-dir
+node_modules
+node-audio.js
+.dockerignore
+.gitignore
+.git
+README.md
+docker-compose.yml
+img.png
+resources/tokens.json
+video
