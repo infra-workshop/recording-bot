@@ -8,3 +8,7 @@ node-audio.js
 .gitignore
 .git
 README.md
+docker-compose.yml
+img.png
+resources/tokens.json
+video

@@ -1,0 +1,11 @@
+version: '3'
+services:
+  main-recorder:
+    image: main-recorder
+    container_name: main-recorder-1
+    restart: always
+    volumes:
+      - ./resources/tokens.json:/recorder/dist/resources/tokens.json
+      - ./video:/recorder/video
+    build:
+      context: ./
