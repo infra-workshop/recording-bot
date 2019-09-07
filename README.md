@@ -1,20 +1,13 @@
+# Infra-Workshop Recording Bot
 
-## ディレクトリ構造
-```
-project
- |- ts
- |  |- 各種モジュール
- |- resources
- |   スクリプトから直接読み込まれるファイル
- |- dist
-    |- js
-    |  tscの結果
-    |- browser
-    |  browser用のビルドの結果
-    |- node
-    |  node.js用のビルドの結果
-    |- resources
-       project/resourcesのコピー
-       requireで読む前提でこの位置
+このBOTはインフラ勉強会でセッションを録画するためのBOTです。
+
+## 起動方法
+
+`./resources/tokens.json`に次のようなjsonをおいて`docker-compose.yml`を実行させてください。
+```json
+{
+  "discord": "<discordのトークン>"
+}
 ```
 
