@@ -71,7 +71,7 @@ export class RecorderController {
         const connection = this.voiceConnection;
 
         const receiver = connection.createReceiver();
-        receiver.voiceConnection.playConvertedStream(ZeroStream);
+        receiver.voiceConnection.playConvertedStream(new ZeroStream());
 
         connection.on('speaking', async (user, speaking) => {
             if (speaking) {
