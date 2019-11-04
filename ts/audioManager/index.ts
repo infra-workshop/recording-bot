@@ -47,7 +47,7 @@ export class AudioManager extends EventEmitter {
     constructor(receiver: VoiceReceiver) {
         super();
         this.receiver = receiver;
-        receiver.voiceConnection.playConvertedStream(ZeroStream);
+        receiver.voiceConnection.playConvertedStream(new ZeroStream());
         receiver.on("pcm", this.onPCM.bind(this));
         this.boundOnTime();
     }

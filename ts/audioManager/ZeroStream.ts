@@ -1,17 +1,21 @@
 import {Readable} from "stream";
 
-export const ZeroStream: Readable = (() => {
+export class ZeroStream extends Readable {
+    private closed = false;
+    constructor() {
+        super({objectMode: true});
+    }
 
-    class ZeroStream extends Readable {
-        constructor() {
-            super({objectMode: true});
+    _read(size: number): void {
+        if (this.closed) {
+            this.push(null);
+            return
         }
-
-        _read(size: number): void {
-            while (this.push(Buffer.alloc(size))) {
-            }
+        while (this.push(Buffer.alloc(size))) {
         }
     }
 
-    return new ZeroStream();
-})();
+    requestClose() {
+        this.closed = true
+    }
+}
