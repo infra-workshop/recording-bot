@@ -156,12 +156,13 @@ function generateExtensionIdByPath(path: string) {
 
                     console.log(`recorder stopping...`);
                     const data = await recorderController.stop();
+                    const date = recorderController.startAt;
                     recorderController = null;
 
                     console.log(`recorder stopped.`);
                     await message.reply("recorder successfully stopped!");
 
-                    const filePath = path.join(rootDir, "../video/" +formatDate(new Date()) + ".webm");
+                    const filePath = path.join(rootDir, "../video/" +formatDate(date) + ".webm");
                     console.log(`saving video to ${filePath}.`);
 
                     fs.existsSync(path.join(rootDir, "../video/")) || await util.promisify(fs.mkdir)(path.join(rootDir, "../video/"));

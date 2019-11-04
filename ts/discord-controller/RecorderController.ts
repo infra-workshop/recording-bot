@@ -12,12 +12,14 @@ export class RecorderController {
     private readonly voiceConnection: VoiceConnection;
     private readonly emitter = new EventEmitter();
     private screenUrl: string;
+    public readonly startAt: Date;
 
     constructor (page: Page, controller: DiscordController, voiceConnection: VoiceConnection, screenUrl: string) {
         this.page = page;
         this.controller = controller;
         this.voiceConnection = voiceConnection;
         this.screenUrl = screenUrl;
+        this.startAt = new Date();
     }
 
     setScreenUrl(screenUrl: string) {
