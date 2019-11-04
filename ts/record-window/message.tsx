@@ -86,7 +86,7 @@ function UserInfo({userInfo}: UserInfoProps) {
     return (
         <div className='user-info'>
             <div className='icon' style={iconCss}/>
-            <h2><span className='user-name'>{userInfo.username}</span></h2>
+            <h2><span className='user-name'>{userInfo.nickname}</span></h2>
         </div>
     );
 }
