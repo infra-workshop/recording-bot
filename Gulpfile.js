@@ -2,7 +2,6 @@ const {src, dest, parallel, series, watch, task: gTask} = require('gulp');
 const ts = require('gulp-typescript');
 const source = require("vinyl-source-stream");
 const browserify = require('browserify');
-const istanbul = require('gulp-istanbul');
 const mocha = require('gulp-mocha');
 const sourcemaps = require('gulp-sourcemaps');
 
@@ -166,8 +165,6 @@ task("test", series(
     function runTests() {
         return src(`dist/${node}/tests/**/*.js`)
             .pipe(mocha())
-            .pipe(istanbul.writeReports())
-            .pipe(istanbul.enforceThresholds({thresholds: {global: 90}}));
     }
 ));
 
