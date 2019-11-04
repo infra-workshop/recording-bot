@@ -16,6 +16,10 @@ import {platform} from "os";
 import {Browser, LaunchOptions} from "puppeteer";
 import * as os from "os";
 import * as util from "util";
+import {youtube_v3} from "googleapis";
+import {auth} from "../auth/main";
+import {BufferReadable} from "./BufferReadable";
+import {GaxiosPromise} from "gaxios";
 
 const rootDir = path.join(__dirname, "../../");
 
@@ -34,13 +38,22 @@ function pad(number: number) {
     return number;
 }
 
-function formatDate(date: Date) {
+function formatDateForFileName(date: Date) {
     return date.getFullYear() +
         '-' + pad(date.getMonth() + 1) +
         '-' + pad(date.getDate()) +
         '-' + pad(date.getHours()) +
         '-' + pad(date.getMinutes()) +
         '-' + pad(date.getSeconds());
+}
+
+function formatDateForVideoName(date: Date) {
+    return date.getFullYear() +
+        '/' + pad(date.getMonth() + 1) +
+        '/' + pad(date.getDate()) +
+        ' ' + pad(date.getHours()) +
+        ':' + pad(date.getMinutes()) +
+        ':' + pad(date.getSeconds());
 }
 
 const hexadecimalToIDAlphabetMap: { [key: string]: string } = {};
@@ -59,6 +72,15 @@ function generateExtensionIdByPath(path: string) {
 }
 
 (async () => {
+    const googleClient = await auth({
+        clientId: tokens.google.clientId,
+        clientSecret: tokens.google.secret,
+    });
+
+    const youtube = new youtube_v3.Youtube({
+        auth: googleClient
+    });
+    console.log(`google OK`);
     await client.login(tokens.discord);
     console.log(`login success!`);
 
@@ -113,6 +135,7 @@ function generateExtensionIdByPath(path: string) {
                     } else {
                         screenUrl = args;
                     }
+                    console.log(`screen url is now ${args}`);
                     await message.reply("screen url successfully set!");
                     break;
                 }
@@ -127,6 +150,7 @@ function generateExtensionIdByPath(path: string) {
                         await message.reply("please connect to voice channel");
                     }
                     if (errored) return;
+                    console.log(`recorder launching...`);
                     const page = await browser.newPage();
                     const controller = await DiscordController.create(message.channel, message.member.voiceChannel);
                     const connection = await message.member.voiceChannel.join();
@@ -139,6 +163,7 @@ function generateExtensionIdByPath(path: string) {
                     screenUrl = undefined;
                     await recorderController.start();
 
+                    console.log(`recorder successfully launched`);
                     await message.reply("recorder successfully launched!");
                     break;
                 }
@@ -151,17 +176,38 @@ function generateExtensionIdByPath(path: string) {
                     }
                     if (errored) return;
 
+                    console.log(`recorder stopping...`);
                     const data = await recorderController.stop();
+                    const date = recorderController.startAt;
                     recorderController = null;
 
+                    const uploadPromise: GaxiosPromise<youtube_v3.Schema$Video> = youtube.videos.insert({
+                        stabilize: false,
+                        media: {
+                            mimeType: "video/webm",
+                            body: new BufferReadable(data),
+                        },
+                        part: "snippet,status",
+                        fields: "snippet(title, description),status(privacyStatus),id",
+                        requestBody: {
+                            snippet: {
+                                title: `infra-workshop session at ${formatDateForVideoName(date)}`,
+                                description: `this is recorded by recording-bot(https://github.com/infra-workshop/recording-bot).`
+                            },
+                            status: {
+                                privacyStatus: "unlisted",
+                            },
+                        },
+                    });
+
+                    console.log(`recorder stopped.`);
                     await message.reply("recorder successfully stopped!");
 
-                    const filePath = path.join(rootDir, "../video/" +formatDate(new Date()) + ".webm");
+                    const result = await uploadPromise;
 
-                    fs.existsSync(path.join(rootDir, "../video/")) || await util.promisify(fs.mkdir)(path.join(rootDir, "../video/"));
-                    await util.promisify(fs.writeFile)(filePath, data);
-
-                    await message.reply(`record file is saved to ${filePath}`);
+                    await message.reply(`record is uploaded to https://youtu.be/${result.data.id}`);
+                    console.log(`uploaded to https://youtu.be/${result.data.id}`);
+                    console.log(util.inspect(result.data));
 
                     break;
                 }
@@ -174,7 +220,9 @@ function generateExtensionIdByPath(path: string) {
                     }
                     if (errored) return;
 
+                    console.log(`taking screen shot...`);
                     const data = await recorderController.takeShot();
+                    console.log(`took`);
 
                     message.channel.send({ file: { attachment: data } });
 
@@ -189,6 +237,7 @@ function generateExtensionIdByPath(path: string) {
                     }
                     if (errored) return;
 
+                    console.log(`toggle debug on/off`);
                     await recorderController.toggleDebug();
 
                     await message.reply("toggled");
@@ -199,9 +248,10 @@ function generateExtensionIdByPath(path: string) {
                 case "help":
                 case undefined:
                 case null: {
+                    console.log(`showing help to ${message.member.user.username}`);
                     const dm = await message.member.createDM();
 
-                    const embed = new RichEmbed({ title: "infra workshop recorder v0.0" });
+                    const embed = new RichEmbed({title: "infra workshop recorder v0.0"});
 
                     embed.addField("?record screen <url>\n?record url <url>",
                         "sets url for screen shareing");

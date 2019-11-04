@@ -11,13 +11,16 @@ export class RecorderController {
     private readonly controller: DiscordController;
     private readonly voiceConnection: VoiceConnection;
     private readonly emitter = new EventEmitter();
+    private readonly PCMStream = new ZeroStream();
     private screenUrl: string;
+    public readonly startAt: Date;
 
     constructor (page: Page, controller: DiscordController, voiceConnection: VoiceConnection, screenUrl: string) {
         this.page = page;
         this.controller = controller;
         this.voiceConnection = voiceConnection;
         this.screenUrl = screenUrl;
+        this.startAt = new Date();
     }
 
     setScreenUrl(screenUrl: string) {
@@ -71,7 +74,7 @@ export class RecorderController {
         const connection = this.voiceConnection;
 
         const receiver = connection.createReceiver();
-        receiver.voiceConnection.playConvertedStream(ZeroStream);
+        receiver.voiceConnection.playConvertedStream(this.PCMStream);
 
         connection.on('speaking', async (user, speaking) => {
             if (speaking) {
@@ -122,6 +125,7 @@ export class RecorderController {
         this.controller.destroy();
         this.voiceConnection.disconnect();
         await this.page.close();
+        this.PCMStream.requestClose();
 
         return Buffer.from(dataUrl.split(",")[1], 'base64')
     }

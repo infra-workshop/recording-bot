@@ -22,6 +22,7 @@ const config = {
             "discord-controller": node,
             "tests": node,
             "audioManager": node,
+            "auth": node,
             "types": common,
             "chrome": chrome,
             "chrome-header": common

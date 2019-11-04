@@ -9,3 +9,5 @@ services:
       - ./video:/recorder/video
     build:
       context: ./
+    ports:
+      - "3000:3000"
