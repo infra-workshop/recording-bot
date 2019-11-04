@@ -1,4 +1,4 @@
-import {Snowflake} from "discord.js";
+import {GuildMember, Snowflake} from "discord.js";
 import {
     Message as DiscordMessage,
     User as DiscordUser,
@@ -22,7 +22,7 @@ export interface Message extends JSONObject {
 
 export function newMessage(base: DiscordMessage): Message {
     return {
-        author: newUser(base.author),
+        author: newUser(base.member),
         reactions: base.reactions.array().map(r => newMessageReaction(r)),
         contentHtml: formatter.format(base),
         id: base.id,
@@ -42,15 +42,15 @@ export interface User extends JSONObject {
     readonly discriminator: string;
     readonly id: Snowflake;
     readonly avatar: string;
-    readonly username: string;
+    readonly nickname: string;
 }
 
-export function newUser(base: DiscordUser): User {
+export function newUser(base: GuildMember): User {
     return {
         id: base.id,
-        avatar: base.avatar,
-        discriminator: base.discriminator,
-        username: base.username,
+        avatar: base.user.avatar,
+        discriminator: base.user.discriminator,
+        nickname: base.nickname || base.user.username,
     };
 }
 
