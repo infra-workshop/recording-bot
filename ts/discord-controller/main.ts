@@ -34,7 +34,7 @@ function pad(number: number) {
     return number;
 }
 
-function formatDate(date: Date) {
+function formatDateForFileName(date: Date) {
     return date.getFullYear() +
         '-' + pad(date.getMonth() + 1) +
         '-' + pad(date.getDate()) +
@@ -162,7 +162,7 @@ function generateExtensionIdByPath(path: string) {
                     console.log(`recorder stopped.`);
                     await message.reply("recorder successfully stopped!");
 
-                    const filePath = path.join(rootDir, "../video/" +formatDate(date) + ".webm");
+                    const filePath = path.join(rootDir, "../video/" +formatDateForFileName(date) + ".webm");
                     console.log(`saving video to ${filePath}.`);
 
                     fs.existsSync(path.join(rootDir, "../video/")) || await util.promisify(fs.mkdir)(path.join(rootDir, "../video/"));
