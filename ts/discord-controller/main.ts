@@ -113,6 +113,7 @@ function generateExtensionIdByPath(path: string) {
                     } else {
                         screenUrl = args;
                     }
+                    console.log(`screen url is now ${args}`);
                     await message.reply("screen url successfully set!");
                     break;
                 }
@@ -127,6 +128,7 @@ function generateExtensionIdByPath(path: string) {
                         await message.reply("please connect to voice channel");
                     }
                     if (errored) return;
+                    console.log(`recorder launching...`);
                     const page = await browser.newPage();
                     const controller = await DiscordController.create(message.channel, message.member.voiceChannel);
                     const connection = await message.member.voiceChannel.join();
@@ -139,6 +141,7 @@ function generateExtensionIdByPath(path: string) {
                     screenUrl = undefined;
                     await recorderController.start();
 
+                    console.log(`recorder successfully launched`);
                     await message.reply("recorder successfully launched!");
                     break;
                 }
@@ -151,16 +154,20 @@ function generateExtensionIdByPath(path: string) {
                     }
                     if (errored) return;
 
+                    console.log(`recorder stopping...`);
                     const data = await recorderController.stop();
                     recorderController = null;
 
+                    console.log(`recorder stopped.`);
                     await message.reply("recorder successfully stopped!");
 
                     const filePath = path.join(rootDir, "../video/" +formatDate(new Date()) + ".webm");
+                    console.log(`saving video to ${filePath}.`);
 
                     fs.existsSync(path.join(rootDir, "../video/")) || await util.promisify(fs.mkdir)(path.join(rootDir, "../video/"));
                     await util.promisify(fs.writeFile)(filePath, data);
 
+                    console.log(`saved.`);
                     await message.reply(`record file is saved to ${filePath}`);
 
                     break;
@@ -174,7 +181,9 @@ function generateExtensionIdByPath(path: string) {
                     }
                     if (errored) return;
 
+                    console.log(`taking screen shot...`);
                     const data = await recorderController.takeShot();
+                    console.log(`took`);
 
                     message.channel.send({ file: { attachment: data } });
 
@@ -189,6 +198,7 @@ function generateExtensionIdByPath(path: string) {
                     }
                     if (errored) return;
 
+                    console.log(`toggle debug on/off`);
                     await recorderController.toggleDebug();
 
                     await message.reply("toggled");
@@ -199,6 +209,7 @@ function generateExtensionIdByPath(path: string) {
                 case "help":
                 case undefined:
                 case null: {
+                    console.log(`showing help to ${message.member.user.username}`);
                     const dm = await message.member.createDM();
 
                     const embed = new RichEmbed({ title: "infra workshop recorder v0.0" });
