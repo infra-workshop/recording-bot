@@ -203,11 +203,15 @@ function generateExtensionIdByPath(path: string) {
                     console.log(`recorder stopped.`);
                     await message.reply("recorder successfully stopped!");
 
-                    const result = await uploadPromise;
+                    try {
+                        const result = await uploadPromise;
 
-                    await message.reply(`record is uploaded to https://youtu.be/${result.data.id}`);
-                    console.log(`uploaded to https://youtu.be/${result.data.id}`);
-                    console.log(util.inspect(result.data));
+                        await message.reply(`record is uploaded to https://youtu.be/${result.data.id}`);
+                        console.log(`uploaded to https://youtu.be/${result.data.id}`);
+                        console.log(util.inspect(result.data));
+                    } catch (e) {
+                        console.error(e);
+                    }
 
                     break;
                 }
