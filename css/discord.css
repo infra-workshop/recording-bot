@@ -196,3 +196,7 @@ a, abbr, acronym, address, applet, big, blockquote, #chat, caption, cite, code, 
 ::-webkit-scrollbar {
     width: 0;
 }
+
+.gray {
+    color: gray;
+}
