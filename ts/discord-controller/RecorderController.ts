@@ -76,28 +76,12 @@ export class RecorderController {
         const receiver = connection.createReceiver();
         receiver.voiceConnection.playConvertedStream(this.PCMStream);
 
-        connection.on('speaking', async (user, speaking) => {
-            if (speaking) {
-                const stream = receiver.createPCMStream(user);
-                stream.on("data", async (data: Buffer) => {
-                    await page.evaluate(async (user: string, binary: string) => {
-                        // @ts-ignore
-                        await window.playAudio(user, base64js.toByteArray(binary).buffer);
-                    }, user.id, new WavCreator().onPCM(data).make().toString("base64"));
-                });
-
-                stream.on("end", async () => {
-                    await page.evaluate(async (user: string) => {
-                        window.endAudio(user);
-                    }, user.id);
-                });
-
-                await page.evaluate(async (user: string) => {
-                    window.startAudio(user);
-                }, user.id);
-                console.log(`start listen: ${user.username}`)
-            }
-        });
+        receiver.on("pcm", async (user, data: Buffer) => {
+            await page.evaluate(async (user: string, binary: string) => {
+                // @ts-ignore
+                await window.playAudio(user, base64js.toByteArray(binary).buffer);
+            }, user.id, new WavCreator().onPCM(data).make().toString("base64"));
+        })
     }
 
     isValid(): boolean {
