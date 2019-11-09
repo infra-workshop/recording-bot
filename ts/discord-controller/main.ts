@@ -203,11 +203,28 @@ function generateExtensionIdByPath(path: string) {
                     console.log(`recorder stopped.`);
                     await message.reply("recorder successfully stopped!");
 
-                    const result = await uploadPromise;
+                    try {
+                        const result = await uploadPromise;
 
-                    await message.reply(`record is uploaded to https://youtu.be/${result.data.id}`);
-                    console.log(`uploaded to https://youtu.be/${result.data.id}`);
-                    console.log(util.inspect(result.data));
+                        await message.reply(`record is uploaded to https://youtu.be/${result.data.id}`);
+                        console.log(`uploaded to https://youtu.be/${result.data.id}`);
+                        console.log(util.inspect(result.data));
+                    } catch (e) {
+                        console.error(e);
+
+                        await message.reply(`uploading to youtube failed`);
+                        console.log(`uploading to youtube failed`);
+
+                        const fileName =  `${formatDateForFileName(new Date())}.webm`;
+                        const filePath = path.join(rootDir, "../video", fileName);
+                        console.log(`saving video to ${filePath}.`);
+
+                        fs.existsSync(path.join(rootDir, "../video/")) || await util.promisify(fs.mkdir)(path.join(rootDir, "../video/"));
+                        await util.promisify(fs.writeFile)(filePath, data);
+
+                        console.log(`saved.`);
+                        await message.reply(`record file is saved to ${fileName}`);
+                    }
 
                     break;
                 }
