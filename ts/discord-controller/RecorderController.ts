@@ -62,7 +62,10 @@ export class RecorderController {
             const creator = new WavCreator();
             voices.map(it => Buffer.from(it, "base64")).forEach(it => creator.onWav(it));
             const member = controller.channel.guild.member(user);
-            controller.channel.send(`your voice here!`, { reply: user, file: { attachment: creator.make(), name: member.displayName + ".wav" } })
+            await controller.channel.send(`your voice here!`, {
+                reply: user,
+                files: [{attachment: creator.make(), name: member.displayName + ".wav"}],
+            })
         });
         await page.evaluate(() => {
             window.sendDebugVoice = async (user: string, voices: Uint8Array[]) => {
@@ -73,12 +76,12 @@ export class RecorderController {
 
         const connection = this.voiceConnection;
 
-        const receiver = connection.createReceiver();
-        receiver.voiceConnection.playConvertedStream(this.PCMStream);
+        const receiver = connection.receiver;
+        connection.play(this.PCMStream, { type: "converted" });
 
         connection.on('speaking', async (user, speaking) => {
             if (speaking) {
-                const stream = receiver.createPCMStream(user);
+                const stream = receiver.createStream(user, {mode: "pcm", end: "silence"});
                 stream.on("data", async (data: Buffer) => {
                     await page.evaluate(async (user: string, binary: string) => {
                         // @ts-ignore

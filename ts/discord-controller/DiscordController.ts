@@ -28,10 +28,10 @@ export class DiscordController extends EventEmitter {
             const msg = messageOrChannel as DiscordMessage;
             if (!(msg.channel instanceof TextChannel))
                 throw TypeError("base message is not TextChannel");
-            if (!msg.member.voiceChannel)
+            if (!msg.member!.voice.channel)
                 throw TypeError("the use don't connected to voice channel.");
             textChannel = msg.channel;
-            voiceChannel = msg.member.voiceChannel;
+            voiceChannel = msg.member!.voice.channel;
         }
 
 
@@ -39,7 +39,7 @@ export class DiscordController extends EventEmitter {
         const connection = await voiceChannel.join();
         connection.on("authenticated", () => { console.log("authenticated"); });
         // create our voice receiver
-        const receiver = connection.createReceiver();
+        const receiver = connection.receiver;
         return new DiscordController(textChannel.client, textChannel);
     }
 
