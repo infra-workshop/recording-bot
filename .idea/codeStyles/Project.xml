@@ -1,0 +1,24 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <option name="OTHER_INDENT_OPTIONS">
+      <value>
+        <option name="USE_TAB_CHARACTER" value="true" />
+        <option name="SMART_TABS" value="true" />
+      </value>
+    </option>
+    <option name="FORMATTER_TAGS_ENABLED" value="true" />
+    <JSON>
+      <option name="ARRAY_WRAPPING" value="1" />
+    </JSON>
+    <JavaCodeStyleSettings>
+      <option name="USE_EXTERNAL_ANNOTATIONS" value="true" />
+    </JavaCodeStyleSettings>
+    <codeStyleSettings language="JAVA">
+      <option name="KEEP_SIMPLE_LAMBDAS_IN_ONE_LINE" value="true" />
+      <option name="KEEP_SIMPLE_CLASSES_IN_ONE_LINE" value="true" />
+      <indentOptions>
+        <option name="SMART_TABS" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
+  </code_scheme>
+</component>
