@@ -26,7 +26,7 @@ class AudioPlayer {
             source.connect(this.connectTo);
             // 再生
 
-            if (this.nextPlay == 0 || this.nextPlay < this.connectTo.context.currentTime + 1) {
+            if (this.nextPlay == 0) {
                 this.nextPlay = this.connectTo.context.currentTime + 0.5;
             }
             console.log("play at : " + this.nextPlay);
