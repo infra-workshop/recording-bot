@@ -6,6 +6,12 @@ import {VoiceConnection} from "discord.js";
 import {EventEmitter} from "events";
 import {ZeroStream} from "../audioManager/ZeroStream";
 
+declare var base64js: {
+    toByteArray(binary: string): Uint8Array;
+    fromByteArray(voice: Uint8Array): string;
+};
+declare function sendDebugVoice_internal(user: string, voices: string[]): Promise<string>;
+
 export class RecorderController {
     private readonly page: Page;
     private readonly controller: DiscordController;
@@ -69,7 +75,6 @@ export class RecorderController {
         });
         await page.evaluate(() => {
             window.sendDebugVoice = async (user: string, voices: Uint8Array[]) => {
-                // @ts-ignore
                 sendDebugVoice_internal(user, voices.map(voice => base64js.fromByteArray(voice)));
             }
         });
@@ -84,7 +89,6 @@ export class RecorderController {
                 const stream = receiver.createStream(user, {mode: "pcm", end: "silence"});
                 stream.on("data", async (data: Buffer) => {
                     await page.evaluate(async (user: string, binary: string) => {
-                        // @ts-ignore
                         await window.playAudio(user, base64js.toByteArray(binary).buffer);
                     }, user.id, new WavCreator().onPCM(data).make().toString("base64"));
                 });
