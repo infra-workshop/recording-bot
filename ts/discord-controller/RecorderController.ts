@@ -80,7 +80,7 @@ export class RecorderController {
         connection.play(this.PCMStream, { type: "converted" });
 
         connection.on('speaking', async (user, speaking) => {
-            if (speaking) {
+            if (speaking.has("SPEAKING")) {
                 const stream = receiver.createStream(user, {mode: "pcm", end: "silence"});
                 stream.on("data", async (data: Buffer) => {
                     await page.evaluate(async (user: string, binary: string) => {
