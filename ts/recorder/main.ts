@@ -102,8 +102,6 @@ async function main () {
         };
 
         window.playAudio = async (user: string, buffer: ArrayBuffer) => {
-            if (!players.has(user))
-                players.set(user, new AudioPlayer(user, audioDestination, debug));
             players.get(user) && players.get(user).onData(buffer);
         };
 

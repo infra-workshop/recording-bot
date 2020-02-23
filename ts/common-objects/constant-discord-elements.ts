@@ -23,7 +23,7 @@ export interface Message extends JSONObject {
 export function newMessage(base: DiscordMessage): Message {
     return {
         author: newUser(base.member),
-        reactions: base.reactions.array().map(r => newMessageReaction(r)),
+        reactions: base.reactions.cache.map(r => newMessageReaction(r)),
         contentHtml: formatter.format(base),
         id: base.id,
     };

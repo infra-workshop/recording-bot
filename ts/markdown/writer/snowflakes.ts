@@ -29,14 +29,15 @@ export const snowflake_user: CustomWriter<DiscordSnowflakeToken> = function snow
 
     let userViewName: string;
     if (msg.channel.type === 'dm' || msg.channel.type === 'group') {
-        userViewName = msg.client.users.has(id) ? `@${msg.client.users.get(id)!.username}` : token.content;
+        let user = msg.client.users.resolve(id);
+        userViewName = user != null ? `@${user.username}` : token.content;
     } else {
-        const member = (msg.channel as GuildChannel).guild.members.get(id);
+        const member = (msg.channel as GuildChannel).guild.members.resolve(id);
         if (member) {
             if (member.nickname) userViewName = `@${member.nickname}`;
             else userViewName = `@${member.user.username}`;
         } else {
-            const user = msg.client.users.get(id);
+            const user = msg.client.users.resolve(id);
             if (user) userViewName = `@${user.username}`;
             else userViewName = token.content;
         }
@@ -47,7 +48,7 @@ export const snowflake_user: CustomWriter<DiscordSnowflakeToken> = function snow
 export const snowflake_channel: CustomWriter<DiscordSnowflakeToken> = function snowflake_channel(writer, token, env): void {
     const msg = getMsg(env);
     const id = token.snowflake;
-    const channel = msg.client.channels.get(id);
+    const channel = msg.client.channels.resolve(id);
     writer.append(wrapMentionSpan(channel ? `#${(channel as any).name}` : token.content));
 };
 
@@ -59,7 +60,7 @@ export const snowflake_role: CustomWriter<DiscordSnowflakeToken> = function snow
     if (msg.channel.type === 'dm' || msg.channel.type === 'group') {
         userViewName = token.content;
     } else {
-        const role = msg.guild.roles.get(id);
+        const role = msg.guild.roles.resolve(id);
         if (role) {
             userViewName = `@${role.name}`;
             color = role.color;
@@ -74,7 +75,7 @@ export const snowflake_emoji: CustomWriter<DiscordSnowflakeToken> = function sno
     const msg = getMsg(env);
     const id = token.snowflake;
     if (msg.channel.type === 'dm' || msg.channel.type === 'group') token.content;
-    const emoji = msg.guild.emojis.get(id);
+    const emoji = msg.guild.emojis.resolve(id);
 
     writer.append(emoji ? `<img alt=":${emoji.name}:" src="${emoji.url}" class="emoji">` : escapeHtml(token.content));
 };

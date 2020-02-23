@@ -2,7 +2,7 @@
 
 
 import * as crypto from "crypto";
-import {Client, RichEmbed, TextChannel} from "discord.js";
+import {Client, MessageEmbed, TextChannel} from "discord.js";
 import * as puppeteer from "puppeteer";
 import * as path from "path";
 import {DiscordController} from "./DiscordController";
@@ -145,15 +145,15 @@ function generateExtensionIdByPath(path: string) {
                         errored = true;
                         await message.reply("now recording");
                     }
-                    if (!message.member.voiceChannel) {
+                    if (!message.member!.voice.channel) {
                         errored = true;
                         await message.reply("please connect to voice channel");
                     }
                     if (errored) return;
                     console.log(`recorder launching...`);
                     const page = await browser.newPage();
-                    const controller = await DiscordController.create(message.channel, message.member.voiceChannel);
-                    const connection = await message.member.voiceChannel.join();
+                    const controller = await DiscordController.create(message.channel, message.member!.voice.channel);
+                    const connection = await message.member!.voice.channel.join();
                     recorderController = new RecorderController(
                         page,
                         controller,
@@ -241,7 +241,7 @@ function generateExtensionIdByPath(path: string) {
                     const data = await recorderController.takeShot();
                     console.log(`took`);
 
-                    message.channel.send({ file: { attachment: data } });
+                    await message.channel.send({ files: [{attachment: data}]});
 
                     break;
                 }
@@ -268,7 +268,7 @@ function generateExtensionIdByPath(path: string) {
                     console.log(`showing help to ${message.member.user.username}`);
                     const dm = await message.member.createDM();
 
-                    const embed = new RichEmbed({title: "infra workshop recorder v0.0"});
+                    const embed = new MessageEmbed().setTitle("infra workshop recorder v0.0");
 
                     embed.addField("?record screen <url>\n?record url <url>",
                         "sets url for screen shareing");

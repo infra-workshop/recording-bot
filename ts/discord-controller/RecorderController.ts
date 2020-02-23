@@ -62,7 +62,10 @@ export class RecorderController {
             const creator = new WavCreator();
             voices.map(it => Buffer.from(it, "base64")).forEach(it => creator.onWav(it));
             const member = controller.channel.guild.member(user);
-            controller.channel.send(`your voice here!`, { reply: user, file: { attachment: creator.make(), name: member.displayName + ".wav" } })
+            await controller.channel.send(`your voice here!`, {
+                reply: user,
+                files: [{attachment: creator.make(), name: member.displayName + ".wav"}],
+            })
         });
         await page.evaluate(() => {
             window.sendDebugVoice = async (user: string, voices: Uint8Array[]) => {
@@ -73,15 +76,31 @@ export class RecorderController {
 
         const connection = this.voiceConnection;
 
-        const receiver = connection.createReceiver();
-        receiver.voiceConnection.playConvertedStream(this.PCMStream);
+        const receiver = connection.receiver;
+        connection.play(this.PCMStream, { type: "converted" });
 
-        receiver.on("pcm", async (user, data: Buffer) => {
-            await page.evaluate(async (user: string, binary: string) => {
-                // @ts-ignore
-                await window.playAudio(user, base64js.toByteArray(binary).buffer);
-            }, user.id, new WavCreator().onPCM(data).make().toString("base64"));
-        })
+        connection.on('speaking', async (user, speaking) => {
+            if (speaking) {
+                const stream = receiver.createStream(user, {mode: "pcm", end: "silence"});
+                stream.on("data", async (data: Buffer) => {
+                    await page.evaluate(async (user: string, binary: string) => {
+                        // @ts-ignore
+                        await window.playAudio(user, base64js.toByteArray(binary).buffer);
+                    }, user.id, new WavCreator().onPCM(data).make().toString("base64"));
+                });
+
+                stream.on("end", async () => {
+                    await page.evaluate(async (user: string) => {
+                        window.endAudio(user);
+                    }, user.id);
+                });
+
+                await page.evaluate(async (user: string) => {
+                    window.startAudio(user);
+                }, user.id);
+                console.log(`start listen: ${user.username}`)
+            }
+        });
     }
 
     isValid(): boolean {

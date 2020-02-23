@@ -8,6 +8,7 @@ ENV NODE_PATH /usr/lib/node_modules
 # remove dev dependencies
 RUN apt update \
     && apt install -y \
+        git \
         ffmpeg \
         xvfb \
         gconf-service \
@@ -54,11 +55,12 @@ RUN apt update \
         fonts-takao \
         fonts-ipafont \
         fonts-ipaexfont \
-        fonts-noto-color-emoji \
-    && : "install node and npm dependences" \
+        fonts-noto-color-emoji
+
+RUN : "install node and npm dependences" \
     && apt install -y npm \
     && npm install n -g \
-    && n 8 \
+    && n 13 \
     && apt purge -y npm \
     && hash -r \
     && : "initialize something" \
