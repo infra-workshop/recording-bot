@@ -4,16 +4,11 @@
 import * as crypto from "crypto";
 import {Client, MessageEmbed, TextChannel} from "discord.js";
 import * as puppeteer from "puppeteer";
+import {LaunchOptions} from "puppeteer";
 import * as path from "path";
 import {DiscordController} from "./DiscordController";
-import {trimMargin} from "trim-margin";
-import {WavCreator} from "../audioManager/WavCreator";
 import {RecorderController} from "./RecorderController";
 import * as fs from "fs";
-import * as child_process from "child_process";
-import {Readable} from "stream";
-import {platform} from "os";
-import {Browser, LaunchOptions} from "puppeteer";
 import * as os from "os";
 import * as util from "util";
 import {youtube_v3} from "googleapis";
