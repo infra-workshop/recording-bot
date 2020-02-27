@@ -13,7 +13,6 @@ function MessageGroup({userInfo, messages}: MessageGroupProps) {
     return (
         <div className={`message-group message-by-${userInfo.id}`}>
             {messages.map((message, i) => <MessageData isFirsInGroup={i == 0} messageInfo={message} key={message.id}/>)}
-            <hr className="divider-end-msg"/>
         </div>
     );
 }
