@@ -340,7 +340,7 @@ class CommandError extends Error {
                     embed.addField("?record debug",
                         "toggle debug mode. this will reset when stop the recording.");
 
-                    dm.send({embed});
+                    await dm.send({embed});
                     break;
                 }
 
