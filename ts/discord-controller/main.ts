@@ -89,6 +89,12 @@ interface SavingState {
 
 let state: State = { type: "ready" };
 
+class CommandError extends Error {
+    constructor(message?: string) {
+        super(message);
+    }
+}
+
 (async () => {
     const googleClient = await auth({
         clientId: tokens.google.clientId,
@@ -136,7 +142,11 @@ let state: State = { type: "ready" };
     let recorderController: RecorderController;
 
     client.on("message", async message => {
-        if (message.content.startsWith("?record")) {
+        if (!message.content.startsWith("?record")) {
+            return
+        }
+
+        try {
             if (!(message.channel instanceof TextChannel)) {
                 await message.reply("you must not send from DM!");
                 return;
@@ -307,6 +317,10 @@ let state: State = { type: "ready" };
                     await message.reply("invalid command");
                 }
             }
+        } catch (e) {
+            if (!(e instanceof CommandError)) throw e;
+            await message.reply(e.message);
+            return;
         }
     })
 
