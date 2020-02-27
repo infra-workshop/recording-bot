@@ -215,17 +215,24 @@ class CommandError extends Error {
                 }
 
                 case "stop": {
-                    let errored = false;
-                    if (!recorderController) {
-                        errored = true;
-                        await message.reply("not now recording");
+                    switch (state.type) {
+                        case "saving":
+                            throw new CommandError(`saving record now`);
+                        case "starting":
+                            throw new CommandError(`starting recorder now`);
+                        case "ready":
+                            throw new CommandError(`not recording. please start.`);
+                        case "recording":
+                            break;
                     }
-                    if (errored) return;
+
+                    const recorderController = state.recorderController;
+
+                    state = { type: "saving" };
 
                     console.log(`recorder stopping...`);
                     const data = await recorderController.stop();
                     const date = recorderController.startAt;
-                    recorderController = null;
 
                     const uploadPromise: GaxiosPromise<youtube_v3.Schema$Video> = youtube.videos.insert({
                         stabilize: false,
@@ -261,7 +268,7 @@ class CommandError extends Error {
                         await message.reply(`uploading to youtube failed`);
                         console.log(`uploading to youtube failed`);
 
-                        const fileName =  `${formatDateForFileName(new Date())}.webm`;
+                        const fileName = `${formatDateForFileName(new Date())}.webm`;
                         const filePath = path.join(rootDir, "../video", fileName);
                         console.log(`saving video to ${filePath}.`);
 
@@ -271,6 +278,8 @@ class CommandError extends Error {
                         console.log(`saved.`);
                         await message.reply(`record file is saved to ${fileName}`);
                     }
+
+                    state = { type: "ready" }
 
                     break;
                 }
@@ -287,7 +296,7 @@ class CommandError extends Error {
                     const data = await recorderController.takeShot();
                     console.log(`took`);
 
-                    await message.channel.send({ files: [{attachment: data}]});
+                    await message.channel.send({files: [{attachment: data}]});
 
                     break;
                 }
