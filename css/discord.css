@@ -82,29 +82,33 @@ a, abbr, acronym, address, applet, big, blockquote, #chat, caption, cite, code, 
 }
 
 .message-group {
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding: 0;
+    margin-top: 10px;
 }
 
 .message-data {
-    margin-bottom: .2em;
+    padding: 3px 20px 3px 70px;
 }
 
 .user-info {
     display: flex;
     align-items: flex-start;
     align-content: normal;
-    height: 1.3em;
+    line-height: 1.375rem;
+    min-height: 1.375rem;
+    padding-left: 70px;
+    position: relative;
+    margin-left: -70px;
 }
 
 .icon {
+    position: absolute;
+    left: 0;
+    top: .125rem;
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-clip: padding-box;
-    background-position: 50%;
-    background-size: 100%;
-    margin: -2px 20px 20px;
+    margin: 0 15px 20px;
 }
 
 .user-name {
@@ -112,11 +116,6 @@ a, abbr, acronym, address, applet, big, blockquote, #chat, caption, cite, code, 
     font-weight: 500;
     letter-spacing: 0;
     cursor: pointer;
-}
-
-.message {
-    margin-left: 80px;
-    margin-right: 80px;
 }
 
 .message-body {
@@ -184,13 +183,6 @@ a, abbr, acronym, address, applet, big, blockquote, #chat, caption, cite, code, 
     -webkit-box-flex: 1;
     -webkit-box-align: center;
     margin-left: -2px;
-}
-
-.divider-end-msg {
-    border: none;
-    border-bottom: 1px solid transparent;
-    border-bottom-color: hsla(0, 0%, 100%, .04);
-    margin: 20px 20px -20px;
 }
 
 ::-webkit-scrollbar {

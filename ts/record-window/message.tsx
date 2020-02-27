@@ -79,14 +79,10 @@ interface UserInfoProps {
 }
 
 function UserInfo({userInfo}: UserInfoProps) {
-    const iconCss = {
-        backgroundImage: `url("${getAvatar(userInfo)}")`
-    };
-
     return (
-        <div className='user-info'>
-            <div className='icon' style={iconCss}/>
-            <h2><span className='user-name'>{userInfo.nickname}</span></h2>
-        </div>
+        <h2 className='user-info'>
+            <img className='icon' src={getAvatar(userInfo)}/>
+            <span className='user-name'>{userInfo.nickname}</span>
+        </h2>
     );
 }
