@@ -137,9 +137,6 @@ class CommandError extends Error {
         process.exit(1);
     });
 
-    let screenUrl: string;
-    let recorderController: RecorderController;
-
     client.on("message", async message => {
         if (!message.content.startsWith("?record")) {
             return
