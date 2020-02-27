@@ -309,9 +309,9 @@ class CommandError extends Error {
                     }
 
                     console.log(`toggle debug on/off`);
-                    await state.recorderController.toggleDebug();
+                    const enabled = await state.recorderController.toggleDebug();
 
-                    await message.reply("toggled");
+                    await message.reply("toggled. debug: " + enabled ? "enabled" : "disabled");
 
                     break;
                 }

@@ -138,9 +138,10 @@ export class RecorderController {
     }
 
     private debug = false;
-    async toggleDebug() {
+    async toggleDebug(): Promise<boolean> {
         this.debug = !this.debug;
         await this.page.evaluate((debug) => { window.debug(debug) }, this.debug);
+        return this.debug;
     }
 
     async takeShot(): Promise<Buffer> {
