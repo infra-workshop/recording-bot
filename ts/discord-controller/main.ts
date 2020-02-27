@@ -164,7 +164,9 @@ class CommandError extends Error {
                 case "url": {
                     switch (state.type) {
                         case "saving":
-                            throw new CommandError(`you can't use ${subCommand} saving video`);
+                            throw new CommandError(`saving record now`);
+                        case "starting":
+                            throw new CommandError(`starting recorder now`);
                         case "recording":
                             state.recorderController.setScreenUrl(args);
                             break;
@@ -180,9 +182,11 @@ class CommandError extends Error {
                 case "start": {
                     switch (state.type) {
                         case "saving":
-                            throw new CommandError(`record saving`);
+                            throw new CommandError(`saving record now`);
                         case "recording":
                             throw new CommandError(`recording now`);
+                        case "starting":
+                            throw new CommandError(`starting recorder now`);
                     }
                     if (!message.member!.voice.channel) {
                         throw new CommandError("please connect to voice channel");
