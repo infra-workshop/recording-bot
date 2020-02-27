@@ -176,29 +176,34 @@ class CommandError extends Error {
                     await message.reply("screen url successfully set!");
                     break;
                 }
+
                 case "start": {
-                    let errored = false;
-                    if (recorderController) {
-                        errored = true;
-                        await message.reply("now recording");
+                    switch (state.type) {
+                        case "saving":
+                            throw new CommandError(`record saving`);
+                        case "recording":
+                            throw new CommandError(`recording now`);
                     }
                     if (!message.member!.voice.channel) {
-                        errored = true;
-                        await message.reply("please connect to voice channel");
+                        throw new CommandError("please connect to voice channel");
                     }
-                    if (errored) return;
+                    const screenUrl = state.screenUrl;
+                    state = { type: "starting" };
                     console.log(`recorder launching...`);
                     const page = await browser.newPage();
                     const controller = await DiscordController.create(message.channel, message.member!.voice.channel);
                     const connection = await message.member!.voice.channel.join();
-                    recorderController = new RecorderController(
-                        page,
-                        controller,
-                        connection,
-                        screenUrl
-                    );
-                    screenUrl = undefined;
-                    await recorderController.start();
+                    state = {
+                        type: "recording",
+                        recorderController: new RecorderController(
+                            page,
+                            controller,
+                            connection,
+                            screenUrl,
+                        ),
+                    };
+
+                    await state.recorderController.start();
 
                     console.log(`recorder successfully launched`);
                     await message.reply("recorder successfully launched!");
@@ -318,7 +323,7 @@ class CommandError extends Error {
                     embed.addField("?record debug",
                         "toggle debug mode. this will reset when stop the recording.");
 
-                    dm.send({ embed });
+                    dm.send({embed});
                     break;
                 }
 
