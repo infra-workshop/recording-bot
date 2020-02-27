@@ -285,15 +285,17 @@ class CommandError extends Error {
                 }
 
                 case "take": {
-                    let errored = false;
-                    if (!recorderController) {
-                        errored = true;
-                        await message.reply("not now recording");
+                    switch (state.type) {
+                        case "saving":
+                            throw new CommandError(`saving record now`);
+                        case "starting":
+                            throw new CommandError(`starting recorder now`);
+                        case "ready":
+                            throw new CommandError(`not recording. please start.`);
                     }
-                    if (errored) return;
 
                     console.log(`taking screen shot...`);
-                    const data = await recorderController.takeShot();
+                    const data = await state.recorderController.takeShot();
                     console.log(`took`);
 
                     await message.channel.send({files: [{attachment: data}]});
