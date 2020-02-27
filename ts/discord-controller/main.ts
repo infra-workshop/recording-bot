@@ -71,11 +71,15 @@ function generateExtensionIdByPath(path: string) {
     return convertHexadecimalToIDAlphabet(crypto.createHash("sha256").update(path).digest("hex")).substr(0, 32)
 }
 
-type State = ReadyState | RecordingState | SavingState;
+type State = ReadyState | RecorderStartingState | RecordingState | SavingState;
 
 interface ReadyState {
     type: "ready";
     screenUrl?: string;
+}
+
+interface RecorderStartingState {
+    type: "starting";
 }
 
 interface RecordingState {
