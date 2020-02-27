@@ -157,11 +157,16 @@ class CommandError extends Error {
 
             switch (subCommand) {
                 case "screen":
-                case "url":{
-                    if (recorderController) {
-                        recorderController.setScreenUrl(args);
-                    } else {
-                        screenUrl = args;
+                case "url": {
+                    switch (state.type) {
+                        case "saving":
+                            throw new CommandError(`you can't use ${subCommand} saving video`);
+                        case "recording":
+                            state.recorderController.setScreenUrl(args);
+                            break;
+                        case "ready":
+                            state.screenUrl = args;
+                            break;
                     }
                     console.log(`screen url is now ${args}`);
                     await message.reply("screen url successfully set!");
