@@ -71,6 +71,24 @@ function generateExtensionIdByPath(path: string) {
     return convertHexadecimalToIDAlphabet(crypto.createHash("sha256").update(path).digest("hex")).substr(0, 32)
 }
 
+type State = ReadyState | RecordingState | SavingState;
+
+interface ReadyState {
+    type: "ready";
+    screenUrl?: string;
+}
+
+interface RecordingState {
+    type: "recording";
+    recorderController: RecorderController;
+}
+
+interface SavingState {
+    type: "saving";
+}
+
+let state: State = { type: "ready" };
+
 (async () => {
     const googleClient = await auth({
         clientId: tokens.google.clientId,
