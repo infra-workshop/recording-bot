@@ -100,9 +100,14 @@ class CommandError extends Error {
         clientSecret: tokens.google.secret,
     });
 
-    const youtube = new youtube_v3.Youtube({
-        auth: googleClient
-    });
+    let youtube: youtube_v3.Youtube | null;
+    if (process.env["YOUTUBE_DISABLED"]) {
+        youtube = null;
+    } else {
+        youtube = new youtube_v3.Youtube({
+            auth: googleClient
+        });
+    }
     console.log(`google OK`);
     await client.login(tokens.discord);
     console.log(`login success!`);
@@ -226,7 +231,7 @@ class CommandError extends Error {
                     const data = await recorderController.stop();
                     const date = recorderController.startAt;
 
-                    const uploadPromise: GaxiosPromise<youtube_v3.Schema$Video> = youtube.videos.insert({
+                    const uploadPromise: GaxiosPromise<youtube_v3.Schema$Video>|null = youtube?.videos?.insert({
                         stabilize: false,
                         media: {
                             mimeType: "video/webm",
@@ -249,6 +254,8 @@ class CommandError extends Error {
                     await message.reply("recorder successfully stopped!");
 
                     try {
+                        if (uploadPromise == null)
+                            throw new Error("upload is disabled");
                         const result = await uploadPromise;
 
                         await message.reply(`record is uploaded to https://youtu.be/${result.data.id}`);
