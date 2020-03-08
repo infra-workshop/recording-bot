@@ -1,7 +1,7 @@
 import {CustomWriter} from "./CustomWriter";
 import {DiscordSnowflakeToken} from "../Tokens";
 import {escapeHtml} from "../util";
-import {GuildChannel, Message} from "discord.js";
+import {Message} from "discord.js";
 import {Env} from "../env";
 
 function wrapMentionSpan(content: string, colorInt?: number) {
@@ -28,11 +28,11 @@ export const snowflake_user: CustomWriter<DiscordSnowflakeToken> = function snow
     const id = token.snowflake;
 
     let userViewName: string;
-    if (msg.channel.type === 'dm' || msg.channel.type === 'group') {
+    if (msg.channel.type === 'dm') {
         let user = msg.client.users.resolve(id);
         userViewName = user != null ? `@${user.username}` : token.content;
     } else {
-        const member = (msg.channel as GuildChannel).guild.members.resolve(id);
+        const member = msg.channel.guild.members.resolve(id);
         if (member) {
             if (member.nickname) userViewName = `@${member.nickname}`;
             else userViewName = `@${member.user.username}`;
@@ -57,7 +57,7 @@ export const snowflake_role: CustomWriter<DiscordSnowflakeToken> = function snow
     const id = token.snowflake;
     let userViewName: string;
     let color: number | undefined = undefined;
-    if (msg.channel.type === 'dm' || msg.channel.type === 'group') {
+    if (msg.channel.type === 'dm') {
         userViewName = token.content;
     } else {
         const role = msg.guild.roles.resolve(id);
@@ -74,7 +74,7 @@ export const snowflake_role: CustomWriter<DiscordSnowflakeToken> = function snow
 export const snowflake_emoji: CustomWriter<DiscordSnowflakeToken> = function snowflake_emoji(writer, token, env): void {
     const msg = getMsg(env);
     const id = token.snowflake;
-    if (msg.channel.type === 'dm' || msg.channel.type === 'group') token.content;
+    if (msg.channel.type === 'dm') token.content;
     const emoji = msg.guild.emojis.resolve(id);
 
     writer.append(emoji ? `<img alt=":${emoji.name}:" src="${emoji.url}" class="emoji">` : escapeHtml(token.content));
