@@ -108,8 +108,8 @@ class CommandError extends Error {
         youtube = new youtube_v3.Youtube({
             auth: googleClient
         });
+        console.log(`google OK`);
     }
-    console.log(`google OK`);
     await client.login(tokens.discord);
     console.log(`login success!`);
 
