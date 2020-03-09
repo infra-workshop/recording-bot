@@ -102,13 +102,14 @@ class CommandError extends Error {
 
     let youtube: youtube_v3.Youtube | null;
     if (process.env["YOUTUBE_DISABLED"]) {
+        console.log("youtube disabled");
         youtube = null;
     } else {
         youtube = new youtube_v3.Youtube({
             auth: googleClient
         });
+        console.log(`google OK`);
     }
-    console.log(`google OK`);
     await client.login(tokens.discord);
     console.log(`login success!`);
 
